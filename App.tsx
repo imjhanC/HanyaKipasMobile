@@ -1,26 +1,23 @@
 import React, { Component } from 'react';
-import FirstScreen from './FirstScreen';
-import SecondScreen from './SecondScreen';
+import Home from './Home';
+import Profile from './Profile';
+import Settings from './Settings';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 
-const StackNav = createStackNavigator ();
+const Tab = createBottomTabNavigator();
 
-export default class App extends Component{
-  render() {
-    return(
+const App = () => {
+    return (
       <NavigationContainer>
-        <StackNav.Navigator initialRouteName="First">
-          <StackNav.Screen
-            name="First"
-            component={FirstScreen}
-          />
-          <StackNav.Screen
-            name="Second"
-            component={SecondScreen}
-          />
-        </StackNav.Navigator>
+        <Tab.Navigator>
+           <Tab.Screen name='Home' component={Home}/>
+           <Tab.Screen name='Profile' component={Profile}/>
+           <Tab.Screen name='Settings' component={Settings}/>
+        </Tab.Navigator>
       </NavigationContainer>
-    ); 
-  }
+    );
 }
+
+export default App;
