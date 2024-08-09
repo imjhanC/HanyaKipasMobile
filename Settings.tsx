@@ -4,7 +4,7 @@ function Settings() {
     return (
         <View>
             <Text>
-                This is the settings page, test setting
+                This is the settings page, test setting. another test.
             </Text>
         </View>
     )
