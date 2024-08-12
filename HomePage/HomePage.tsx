@@ -45,6 +45,27 @@ let testData = [
     desc: 'F4213',
     imgSrc: require('./chicken.jpg'),
   },
+  {
+    key: '500',
+    Type: 'cf',
+    name: 'F3',
+    desc: 'F3213',
+    imgSrc: require('./chicken.jpg'),
+  },
+  {
+    key: '600',
+    Type: 'cf',
+    name: 'F3',
+    desc: 'F3213',
+    imgSrc: require('./chicken.jpg'),
+  },
+  {
+    key: '700',
+    Type: 'cf',
+    name: 'F3',
+    desc: 'F3213',
+    imgSrc: require('./chicken.jpg'),
+  },
 ];
 
 const App = ({router, navigation}: any) =>{
@@ -160,6 +181,7 @@ const styles = StyleSheet.create({
     padding: 12,
     margin: 25,
     marginLeft: 10,
+    marginBottom: 10,
     borderRadius: 8,
     color: '#666',
     backgroundColor: '#e9e9e9',
@@ -182,7 +204,7 @@ const styles = StyleSheet.create({
   },
 
   fanContainer: {
-    marginBottom: 25,
+    marginBottom: 10,
     color: 'black',
   },
 
