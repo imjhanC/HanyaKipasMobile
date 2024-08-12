@@ -7,106 +7,146 @@ import {
     TouchableNativeFeedback,
     FlatList,
     Dimensions,
-    SafeAreaView
+    SafeAreaView,
+    Image,
 } from 'react-native';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 // npm install react-native-parallax-scroll-view --save
 
-let numColumns = 4;
+let productColumn = 2;
 
+// for imgSrc the require() tag is required!!!!!
 let testData = [
   {
     key: '100',
+    Type: 'bf',
     name: 'F1',
+    desc: 'F1213',
+    imgSrc: require('./chicken.jpg'),
   },
   {
     key: '200',
+    Type: 'bf',
     name: 'F2',
+    desc: 'F213',
+    imgSrc: require('./chicken.jpg'),
   },
   {
     key: '300',
+    Type: 'cf',
     name: 'F3',
+    desc: 'F3213',
+    imgSrc: require('./chicken.jpg'),
   },
   {
     key: '400',
+    Type: 'tf',
     name: 'F4',
+    desc: 'F4213',
+    imgSrc: require('./chicken.jpg'),
   },
 ];
 
 const App = ({router, navigation}: any) =>{
-    const [fanType, setFanType] = useState([
-      {
-        id: 1,
-        Type: "All",
-      },
-      {
-        id: 2,
-        Type: "Bladeless Fan",
-      },
-      {
-        id: 3,
-        Type: "Table Fan",
-      },
-      {
-        id: 4,
-        Type: "Ceiling Fan"
-      }
-    ]);
+  const [fanType, setFanType] = useState([
+  {
+    id: 1,
+    Type: "All Fans",
+  },
+  {
+    id: 2,
+    Type: "Bladeless Fan",
+  },
+  {
+    id: 3,
+    Type: "Table Fan",
+  },
+  {
+    id: 4,
+    Type: "Ceiling Fan"
+  }
+  ]);
 
-    useEffect(() => {
-      
-    })
+  const [products, setProducts] = useState<any[]>([])
 
-    return(
-        <SafeAreaView>
-          {/* Top Navigation Bar*/}
-          <View style={styles.topNavContainer}>
-            <View style={styles.searchContainer}>
-              <MaterialCommunityIcons  
-                name="cloud-search-outline"
-                style={{
-                  fontSize: 24,
-                  color: '#487df7',
-                }}
-                />
-              <TouchableNativeFeedback 
-                onPress={() => navigation.navigate('SearchPage')}
-              >
-                <Text style={styles.searchText}>CLIC ME BISH</Text>
+  useEffect(() => {
+    setProducts(testData);
+  },[]);
+
+  return(
+    <SafeAreaView>
+      {/* Top Navigation Bar*/}
+      <View style={styles.topNavContainer}>
+        <View style={styles.searchContainer}>
+          <MaterialCommunityIcons  
+            name="cloud-search-outline"
+            style={{
+              fontSize: 24,
+              color: '#487df7',
+            }}
+          />
+          <TouchableNativeFeedback 
+            onPress={() => navigation.navigate('SearchPage')}
+          >
+            <Text style={styles.searchText}>CLIC ME BISH</Text>
+          </TouchableNativeFeedback>
+        </View>
+
+        <View style={styles.headerRightContainer}>
+          <TouchableNativeFeedback
+            onPress={() => navigation.navigate('Shoppingcart')}
+          >
+          <MaterialCommunityIcons name="cart-outline"
+            style={{
+              fontSize: 30,
+              color: '#487df7',
+            }}
+          />
+          </TouchableNativeFeedback>
+        </View>
+      </View>
+
+      <View style={styles.fanContainer}>
+        <FlatList 
+          keyExtractor={item => item.id.toString()}
+          data = {fanType}
+          horizontal
+          showsHorizontalScrollIndicator = {false}
+          renderItem = {({ item }) => {
+            return(
+              <TouchableNativeFeedback>
+                <View style={styles.fanTypeContainer}>
+                  <Text style={styles.fanTypeText}>{item.Type}</Text>
+                </View>
               </TouchableNativeFeedback>
-            </View>
+            )}}
+          />
+      </View>
 
-            <View style={styles.headerRightContainer}>
-              <TouchableNativeFeedback
-                onPress={() => navigation.navigate('Shoppingcart')}
-              >
-                <MaterialCommunityIcons name="cart-outline"
-                  style={{
-                    fontSize: 30,
-                    color: '#487df7',
-                  }}
-                />
+      <View style={styles.productContainer}>
+        <FlatList
+          keyExtractor = {item => item.key.toString()}
+          data = {products}
+          showsVerticalScrollIndicator = {false}
+          horizontal = {false}
+          numColumns = {2}
+          renderItem = {({ item }) => {
+            return(
+              <TouchableNativeFeedback>
+                <View style={styles.individualProductContainer}>
+                  <View style={styles.productImgContainer}>
+                    <Image source={item.imgSrc} style={styles.productImg}/>
+                  </View>
+                  <Text style={styles.productName}>{item.name}</Text>
+                  <Text style={styles.productDesc}>{item.desc}</Text>
+                </View>
               </TouchableNativeFeedback>
-            </View>
-          </View>
-            
-          <View style={styles.fanContainer}>
-            <FlatList 
-              numColumns={numColumns}
-              keyExtractor={item => item.id.toString()}
-              data = {fanType}
-              renderItem = {({ item }) => {
-                return(
-                  <TouchableNativeFeedback>
-                    <View style={styles.fanTypeContainer}>
-                      <Text style={styles.fanTypeText}>{item.Type}</Text>
-                    </View>
-                  </TouchableNativeFeedback>
-              )}}
-            />
-          </View>
-        </SafeAreaView>
-    );
+            )
+          }}
+        />
+      </View>
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -140,21 +180,66 @@ const styles = StyleSheet.create({
     // color: '#666',
     // backgroundColor: '#eaeaea',
   },
+
   fanContainer: {
-    flexDirection: 'row',
+    marginBottom: 25,
     color: 'black',
   },
+
   fanTypeContainer: {
     flex: 1,
     flexDirection: 'row',
+    height: 25,
+    width: 150,
     borderRadius: 50,
     borderWidth: 2,
-    borderColor: 'black',
-    justifyContent: 'flex-start',
+    borderColor: '#7e7e7e',
+    justifyContent: 'center',
   },
+
   fanTypeText: {
     fontSize: 16,
     color: 'black',
+  },
+
+  productContainer: {
+    backgroundColor: '#ececec',
+  },
+
+  individualProductContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    height: 400,
+    width: '50%',
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#aabfff',
+    textAlign: 'center',
+    margin: 5,
+  },
+
+  productImgContainer: {
+    alignItems: 'center'
+  },
+
+  productImg: {
+    height: '80%',
+    width: '80%',
+  },
+
+  productName: {
+    marginTop: -50,
+    fontSize: 35,
+    fontWeight: '700',
+    color: 'black',
+    textAlign: 'center',
+  },
+
+  productDesc: {
+    fontSize: 25,
+    fontWeight: '400',
+    color: '#4b4b4b',
+    textAlign: 'center',
   },
 })
 export default App;
