@@ -13,7 +13,7 @@ import {
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 // npm install react-native-parallax-scroll-view --save
 
-let productColumn = 2;
+const windowHeight = Dimensions.get('window').height;
 
 // for imgSrc the require() tag is required!!!!!
 let testData = [
@@ -95,7 +95,7 @@ const App = ({router, navigation}: any) =>{
   },[]);
 
   return(
-    <SafeAreaView>
+    <SafeAreaView style={styles.allContainer}>
       {/* Top Navigation Bar*/}
       <View style={styles.topNavContainer}>
         <View style={styles.searchContainer}>
@@ -107,7 +107,7 @@ const App = ({router, navigation}: any) =>{
             }}
           />
           <TouchableNativeFeedback 
-            onPress={() => navigation.navigate('SearchPage')}
+            onPress={() => navigation.navigate("SearchPage")}
           >
             <Text style={styles.searchText}>CLIC ME BISH</Text>
           </TouchableNativeFeedback>
@@ -159,7 +159,7 @@ const App = ({router, navigation}: any) =>{
                     <Image source={item.imgSrc} style={styles.productImg}/>
                   </View>
                   <Text style={styles.productName}>{item.name}</Text>
-                  <Text style={styles.productDesc}>{item.desc}</Text>
+                  {/* <Text style={styles.productDesc}>{item.desc}</Text> */}
                 </View>
               </TouchableNativeFeedback>
             )
@@ -171,9 +171,14 @@ const App = ({router, navigation}: any) =>{
 }
 
 const styles = StyleSheet.create({
+  allContainer: {
+    paddingBottom: windowHeight * 0.25,
+  },
+
   topNavContainer: {
     flexDirection: 'row',
   },
+
   searchContainer:{
     flexDirection: 'row',
     flex: 0.9,
@@ -233,20 +238,21 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     height: 400,
     width: '50%',
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: '#aabfff',
+    // borderRadius: 10,
+    // borderWidth: 2,
+    // borderColor: '#aabfff',
     textAlign: 'center',
     margin: 5,
   },
 
   productImgContainer: {
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingTop: 5,
   },
 
   productImg: {
     height: '80%',
-    width: '80%',
+    width: '95%',
   },
 
   productName: {
@@ -257,11 +263,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
-  productDesc: {
-    fontSize: 25,
-    fontWeight: '400',
-    color: '#4b4b4b',
-    textAlign: 'center',
-  },
+  // productDesc: {
+  //   fontSize: 25,
+  //   fontWeight: '400',
+  //   color: '#4b4b4b',
+  //   textAlign: 'center',
+  // },
 })
 export default App;
