@@ -10,3 +10,6 @@ INSERT INTO users (username, password) VALUES ('jhan', '12345678');
 INSERT INTO users (username, password) VALUES ('jhan1', '12345678');
 INSERT INTO users (username, password) VALUES ('jhan2', '12345678');
 INSERT INTO users (username, password) VALUES ('jhan3', '12345678');
+
+sqlite3 products.db
+CREAR
