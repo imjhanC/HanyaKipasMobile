@@ -1,79 +1,52 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# How to setup <server>
+1st - type <sqlite movies.db>
+2nd - in the sqlite terminal
+   <CREATE TABLE movies (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    releaseYear TEXT NOT NULL
+   );
 
-# Getting Started
+      INSERT INTO movies (title, releaseYear) VALUES ('The Shawshank Redemption', '1994');
+      INSERT INTO movies (title, releaseYear) VALUES ('The Godfather', '1972');
+      INSERT INTO movies (title, releaseYear) VALUES ('The Dark Knight', '2008');
+      INSERT INTO movies (title, releaseYear) VALUES ('Pulp Fiction', '1994');
+   >
+3rd   - open a python file and type in this following 
+   <from flask import Flask, jsonify
+   from flask_cors import CORS
+   import sqlite3
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+   app = Flask(__name__)
+   CORS(app)
 
-## Step 1: Start the Metro Server
+   def get_db_connection():
+      conn = sqlite3.connect('movies.db')
+      conn.row_factory = sqlite3.Row  # This allows you to access the columns by name
+      return conn
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+   @app.route('/movies', methods=['GET'])
+   def get_movies():
+      conn = get_db_connection()
+      cursor = conn.cursor()
+      
+      cursor.execute('SELECT * FROM movies')
+      movies = cursor.fetchall()
+      
+      conn.close()
 
-To start Metro, run the following command from the _root_ of your React Native project:
+      # Convert rows to a list of dictionaries
+      movies_list = []
+      for movie in movies:
+         movies_list.append({"id": movie["id"], "title": movie["title"], "releaseYear": movie["releaseYear"]})
 
-```bash
-# using npm
-npm start
+      return jsonify({"movies": movies_list})
 
-# OR using Yarn
-yarn start
-```
+   if __name__ == '__main__':
+      app.run(host='127.0.0.1', port=3000, debug=True)
+   >
 
-## Step 2: Start your Application
-
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
-
-### For Android
-
-```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### For iOS
-
-```bash
-# using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
-
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
-
-## Step 3: Modifying your App
-
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+4th - python server.py 
+5th - You will see something as "This is a development server with the IP listed "
+6th - run the App  ! 
+7th - Can't connect ? Try this => go to terminal and type  <adb devices> then try this <adb reverse tcp:3000 tcp:3000>
