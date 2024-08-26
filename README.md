@@ -11,7 +11,7 @@
       INSERT INTO movies (title, releaseYear) VALUES ('The Godfather', '1972');
       INSERT INTO movies (title, releaseYear) VALUES ('The Dark Knight', '2008');
       INSERT INTO movies (title, releaseYear) VALUES ('Pulp Fiction', '1994');
-   >
+>
 3rd   - open a python file and type in this following 
    <from flask import Flask, jsonify
    from flask_cors import CORS
@@ -44,7 +44,7 @@
 
    if __name__ == '__main__':
       app.run(host='127.0.0.1', port=3000, debug=True)
-   >
+>
 
 4th - python server.py 
 5th - You will see something as "This is a development server with the IP listed "
