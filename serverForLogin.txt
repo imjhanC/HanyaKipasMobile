@@ -13,5 +13,11 @@ INSERT INTO users (username, password) VALUES ('jhan3', '12345678');
 
 sqlite3 products.db
 CREATE TABLE products (
-
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    product_name TEXT NOT NULL UNIQUE,
+    product_qty INTEGER NOT NULL,
+    product_desc TEXT NOT NULL,
+    product_img BLOB NOT NULL,
+    product_price DOUBLE NOT NULL,
+    product_type TEXT NOT NULL
 );
