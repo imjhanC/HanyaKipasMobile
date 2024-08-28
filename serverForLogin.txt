@@ -1,5 +1,4 @@
 sqlite3 users.db
-
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT NOT NULL UNIQUE,
@@ -12,4 +11,14 @@ INSERT INTO users (username, password) VALUES ('jhan2', '12345678');
 INSERT INTO users (username, password) VALUES ('jhan3', '12345678');
 
 sqlite3 products.db
-CREAR
+CREATE TABLE products (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    product_name TEXT NOT NULL UNIQUE,
+    product_qty INTEGER NOT NULL,
+    product_desc TEXT NOT NULL,
+    product_img MEDIUMBLOB NOT NULL,
+    product_price DOUBLE NOT NULL,
+    product_type TEXT NOT NULL
+);
+
+INSERT INTO products (product_name,product_qty,product_desc,product_img,product_price,product_type) VALUES ()
