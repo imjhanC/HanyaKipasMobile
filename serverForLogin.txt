@@ -21,3 +21,13 @@ CREATE TABLE products (
     product_price DOUBLE NOT NULL,
     product_type TEXT NOT NULL
 );
+
+sqlite3 order.db
+CREATE TABLE order (
+    cusname TEXT NOT NULL,
+    cus_addr TEXT NOT NULL,
+    cus_phoneno TEXT NOT NULL,
+    orderitem_name TEXT NOT NULL,
+    orderitem_qty INTEGER NOT NULL,
+    orderitem_totalprice DOUBLE NOT NULL
+);
