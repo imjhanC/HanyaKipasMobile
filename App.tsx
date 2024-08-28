@@ -1,85 +1,99 @@
-import React, { useState } from 'react';
-import { View, TextInput, Button, Text, Alert, StyleSheet } from 'react-native';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { 
+    View, 
+    StyleSheet, 
+    TextInput, 
+    Text, 
+    TouchableNativeFeedback,
+    FlatList,
+    Dimensions,
+    SafeAreaView
+} from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import HomePage from "./HomePage/HomePage.tsx";
+import ProfilePage from "./HomePage/ProfilePage.tsx";
+import SearchPage from "./HomePage/SearchPage.tsx";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { createStackNavigator } from '@react-navigation/stack';
 
-const LoginScreen = () => {
-  const [username, setUsername] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
+const btmNav = createBottomTabNavigator();
+const stack = createStackNavigator();
 
-  const handleLogin = async () => {
-    if (!username || !password) {
-      Alert.alert("Error", "Please enter both username and password.");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const response = await axios.post('http://127.0.0.1:3000/login', {
-        username,
-        password,
-      });
-
-      if (response.status === 200) {
-        Alert.alert("Success", "Login successful!");
-        // Navigate to the next screen or perform other actions on successful login
-      }
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        Alert.alert("Error", "Invalid username or password.");
-      } else {
-        console.error(error);
-        Alert.alert("Error", "Something went wrong. Please try again later.");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Username"
-        value={username}
-        onChangeText={setUsername}
-        autoCapitalize="none"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-      <Button
-        title={loading ? "Logging in..." : "Login"}
-        onPress={handleLogin}
-        disabled={loading}
-      />
-    </View>
+const Home = () => {
+  return(
+      <stack.Navigator
+        initialRouteName='HomePage'
+        screenOptions={{
+          headerShown: false
+        }}
+      >
+        <stack.Screen name="HomePage" component={HomePage} />
+        <stack.Screen name="ProfilePage" component={ProfilePage} />
+        <stack.Screen name="SearchPage" component={SearchPage} />
+      </stack.Navigator>
   );
-};
+}
+
+const App = ({route, navigation}: any) => {
+
+    const windowHeight = Dimensions.get('window').height;
+
+    return (
+      <SafeAreaView style={{flex:1}}>
+        <NavigationContainer>
+          <btmNav.Navigator
+            screenOptions={{
+              headerShown: false,
+              tabBarStyle:{
+                height: windowHeight * .06,
+              }
+            }}
+          >
+              <btmNav.Screen 
+                name="Home" 
+                component={Home}
+                options={{
+                  tabBarIcon: ({focused}) => 
+                    <MaterialCommunityIcons 
+                      name = {focused ? "fan-auto" : "fan-alert"}
+                      size = {25}
+                      color = {focused ? "#5ed1f5" : "#676767"}
+                    />
+                }}   
+              />
+              <btmNav.Screen name="Profile" component={ProfilePage} />
+              <btmNav.Screen name="Profile2" component={ProfilePage} />
+          </btmNav.Navigator>
+        </NavigationContainer>
+      </SafeAreaView>
+    );
+}
 
 const styles = StyleSheet.create({
-  container: {
+  label: {
     flex: 1,
-    justifyContent: 'center',
-    padding: 16,
-  },
-  title: {
-    fontSize: 24,
-    marginBottom: 24,
-    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginLeft: 3,
+    textAlignVertical: 'center',
   },
   input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 12,
-    paddingHorizontal: 8,
+    flex: 3,
+    // right:20,
+    fontSize: 20,
+    color: 'blue',
+  },
+  button: {
+    backgroundColor: '#286090',
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    fontSize: 18,
+    color: 'white',
+    textAlign: 'center',
   },
 });
 
-export default LoginScreen;
+export default App;
