@@ -14,7 +14,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import HomePage from "./HomePage/HomePage.tsx";
 import ProfilePage from "./HomePage/ProfilePage.tsx";
 import SearchPage from "./HomePage/SearchPage.tsx";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { createStackNavigator } from '@react-navigation/stack';
 
 const btmNav = createBottomTabNavigator();
@@ -56,35 +56,35 @@ const App = ({route, navigation}: any) => {
               component={Home}
               options={{
                 tabBarIcon: ({focused}) => 
-                  <Ionicons 
+                  <MaterialCommunityIcons 
                     name = {focused ? "home" : "home-outline"}
-                    size = {25}
+                    size = {35}
                     color = {focused ? "#0086ff" : "#676767"} // Updated color to #0086ff
                   />
               }}   
             />
 
             <btmNav.Screen 
-              name="Profile" 
+              name="Order" 
               component={ProfilePage}
               options={{
                 tabBarIcon: ({focused}) => 
-                  <Ionicons 
-                    name = {focused ? "person" : "person-outline"}
-                    size = {25}
+                  <MaterialCommunityIcons 
+                    name = {focused ? "script-text" : "script-text-outline"}
+                    size = {35}
                     color = {focused ? "#0086ff" : "#676767"} // Updated color to #0086ff
                   />
               }} 
             />
 
             <btmNav.Screen 
-              name="Profile2" 
+              name="Settings" 
               component={ProfilePage}
               options={{
                 tabBarIcon: ({focused}) => 
-                  <Ionicons 
-                    name = {focused ? "person" : "person-outline"}
-                    size = {25}
+                  <MaterialCommunityIcons 
+                    name = {focused ? "account-settings" : "account-settings-outline"}
+                    size = {35}
                     color = {focused ? "#0086ff" : "#676767"} // Updated color to #0086ff
                   />
               }} 
