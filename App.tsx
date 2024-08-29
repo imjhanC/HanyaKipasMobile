@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, Alert, StyleSheet } from 'react-native';
+import { View, TextInput, Button, Text, Alert, StyleSheet ,Image } from 'react-native';
 import axios from 'axios';
 
 const LoginScreen = () => {
@@ -38,6 +38,8 @@ const LoginScreen = () => {
 
   return (
     <View style={styles.container}>
+      <Image 
+      source={require('./HanyaKipasLogo.png')}/>
       <Text style={styles.title}>Login</Text>
       <TextInput
         style={styles.input}
