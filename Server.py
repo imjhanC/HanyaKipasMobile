@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import sqlite3
+import base64
 
 app = Flask(__name__)
 CORS(app)
@@ -8,6 +9,11 @@ CORS(app)
 def get_db_connection():
     conn = sqlite3.connect('users.db')
     conn.row_factory = sqlite3.Row  # This allows you to access the columns by name
+    return conn
+
+def get_db_connection_1(db_name='products.db'):
+    conn = sqlite3.connect(db_name)
+    conn.row_factory = sqlite3.Row  # Allows you to access columns by name
     return conn
 
 # Route to register a new user
@@ -64,6 +70,34 @@ def get_users():
         users_list.append({"id": user["id"], "username": user["username"]})
 
     return jsonify({"users": users_list})
+
+
+@app.route('/products', methods=['GET'])
+def get_products():
+    conn = get_db_connection_1('products.db')
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT * FROM products')
+    products = cursor.fetchall()
+
+    conn.close()
+
+    products_list = []
+    for product in products:
+        # Convert BLOB to base64 encoded string
+        product_img_base64 = base64.b64encode(product["product_img"]).decode('utf-8') if product["product_img"] else None
+        
+        products_list.append({
+            "id": product["id"],
+            "product_name": product["product_name"],
+            "product_qty": product["product_qty"],
+            "product_desc": product["product_desc"],
+            "product_img": product_img_base64,  # Base64 encoded string
+            "product_price": product["product_price"],
+            "product_type": product["product_type"]
+        })
+
+    return jsonify({"products": products_list})
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=3000, debug=True)
