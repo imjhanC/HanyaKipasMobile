@@ -56,16 +56,16 @@ INSERT INTO products (product_name, product_qty, product_desc, product_img, prod
 INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('ELECTROLUX table fan', 60, 'Cool Table fan8',readfile('Products\tablefan\tablefan9.jpg'),103.00,'bladeless fan');
 INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('MODEST n cold table fan', 21, 'Cool Table fan9 ',readfile('Products\tablefan\tablefan10.jpg'),103.00,'bladeless fan');
 
-INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('ELBA table fan', 22, 'Cool Table fan',readfile('Products\tablefan\tablefan1.jpg'),103.00,'table fan');
-INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('SweetFull table fan', 10, 'Cool Table fan1',readfile('Products\tablefan\tablefan2.jpg'),103.00,'table fan');
-INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('KHIND table fan', 23, 'Cool Table fan2',readfile('Products\tablefan\tablefan3.jpg'),103.00,'table fan');
-INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('EAZYY black premium table fan', 40, 'Cool Table fan3',readfile('Products\tablefan\tablefan4.jpg'),103.00,'table fan');
-INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('EDC vintage rose gold table fan', 9, 'Cool Table fan4',readfile('Products\tablefan\tablefan5.jpg'),103.00,'table fan');
-INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('Handheld SAMSENG USBtable fan', 70, 'Cool Table fan5',readfile('Products\tablefan\tablefan6.jpg'),103.00,'table fan');
-INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('Fold n Swing table fan', 3, 'Cool Table fan6',readfile('Products\tablefan\tablefan7.jpg'),103.00,'table fan');
-INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('Modern table fan', 40, 'Cool Table fan7',readfile('Products\tablefan\tablefan8.jpg'),103.00,'table fan');
-INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('ELECTROLUX table fan', 60, 'Cool Table fan8',readfile('Products\tablefan\tablefan9.jpg'),103.00,'table fan');
-INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('MODEST n cold table fan', 21, 'Cool Table fan9 ',readfile('Products\tablefan\tablefan10.jpg'),103.00,'table fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('White Limited Edition Aircond', 22, 'Cool Table fan',readfile('Products\tablefan\tablefan1.jpg'),103.00,'aircond');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('Coway Aircond Second Hand Compressor', 10, 'Cool Table fan1',readfile('Products\tablefan\tablefan2.jpg'),103.00,'aircond');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('Acson Celling Aircond ECOCooL', 23, 'Cool Table fan2',readfile('Products\tablefan\tablefan3.jpg'),103.00,'aircond');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('Midea 1.0 HP portable Aircond', 40, 'Cool Table fan3',readfile('Products\tablefan\tablefan4.jpg'),103.00,'aircond');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('Haier Inverter 1.5 HP Aircond', 9, 'Cool Table fan4',readfile('Products\tablefan\tablefan5.jpg'),103.00,'aircond');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('Portable HIMID 1.0 HP Aircond', 70, 'Cool Table fan5',readfile('Products\tablefan\tablefan6.jpg'),103.00,'aircond');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('Acson paper cutter portable Aircond', 3, 'Cool Table fan6',readfile('Products\tablefan\tablefan7.jpg'),103.00,'aircond');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('Morgan MAC-093 1.0 HP portable Aircond', 40, 'Cool Table fan7',readfile('Products\tablefan\tablefan8.jpg'),103.00,'aircond');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('Vintage Aircond', 60, 'Cool Table fan8',readfile('Products\tablefan\tablefan9.jpg'),103.00,'aircond');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('SAMSENG portable 1.0 HP Aircond', 21, 'Cool Table fan9 ',readfile('Products\tablefan\tablefan10.jpg'),103.00,'aircond');
 
 sqlite3 order.db
 CREATE TABLE order (
