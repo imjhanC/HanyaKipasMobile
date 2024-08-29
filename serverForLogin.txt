@@ -10,15 +10,69 @@ INSERT INTO users (username, password) VALUES ('jhan1', '12345678');
 INSERT INTO users (username, password) VALUES ('jhan2', '12345678');
 INSERT INTO users (username, password) VALUES ('jhan3', '12345678');
 
+
+
 sqlite3 products.db
 CREATE TABLE products (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     product_name TEXT NOT NULL UNIQUE,
     product_qty INTEGER NOT NULL,
     product_desc TEXT NOT NULL,
-    product_img MEDIUMBLOB NOT NULL,
+    product_img BLOB NOT NULL,
     product_price DOUBLE NOT NULL,
     product_type TEXT NOT NULL
 );
 
-INSERT INTO products (product_name,product_qty,product_desc,product_img,product_price,product_type) VALUES ()
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('ELBA table fan', 22, 'Cool Table fan',readfile('Products\tablefan\tablefan1.jpg'),103.00,'table fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('SweetFull table fan', 10, 'Cool Table fan1',readfile('Products\tablefan\tablefan2.jpg'),203.00,'table fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('KHIND table fan', 23, 'Cool Table fan2',readfile('Products\tablefan\tablefan3.jpg'),403.00,'table fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('EAZYY black premium table fan', 40, 'Cool Table fan3',readfile('Products\tablefan\tablefan4.jpg'),523.00,'table fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('EDC vintage rose gold table fan', 9, 'Cool Table fan4',readfile('Products\tablefan\tablefan5.jpg'),133.00,'table fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('Handheld SAMSENG USBtable fan', 70, 'Cool Table fan5',readfile('Products\tablefan\tablefan6.jpg'),143.00,'table fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('Fold n Swing table fan', 3, 'Cool Table fan6',readfile('Products\tablefan\tablefan7.jpg'),303.00,'table fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('Modern table fan', 40, 'Cool Table fan7',readfile('Products\tablefan\tablefan8.jpg'),803.00,'table fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('ELECTROLUX table fan', 60, 'Cool Table fan8',readfile('Products\tablefan\tablefan9.jpg'),104.00,'table fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('MODEST n cold table fan', 21, 'Cool Table fan9 ',readfile('Products\tablefan\tablefan10.jpg'),450.00,'table fan');
+
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('ELBA table fan', 22, 'Cool Table fan',readfile('Products\cellingfan\cellingfan1.jpg'),103.00,'celling fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('SweetFull table fan', 10, 'Cool Table fan1',readfile('Products\cellingfan\cellingfan2.jpg'),103.00,'celling fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('KHIND table fan', 23, 'Cool Table fan2',readfile('Products\cellingfan\cellingfan3.jpg'),103.00,'celling fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('EAZYY black premium table fan', 40, 'Cool Table fan3',readfile('Products\cellingfan\cellingfan4.jpg'),103.00,'celling fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('EDC vintage rose gold table fan', 9, 'Cool Table fan4',readfile('Products\cellingfan\cellingfan5.jpg'),103.00,'celling fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('Handheld SAMSENG USBtable fan', 70, 'Cool Table fan5',readfile('Products\cellingfan\cellingfan6.jpg'),103.00,'celling fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('Fold n Swing table fan', 3, 'Cool Table fan6',readfile('Products\cellingfan\cellingfan7.jpg'),103.00,'celling fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('Modern table fan', 40, 'Cool Table fan7',readfile('Products\cellingfan\cellingfan8.jpg'),103.00,'celling fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('ELECTROLUX table fan', 60, 'Cool Table fan8',readfile('Products\cellingfan\cellingfan9.jpg'),103.00,'celling fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('MODEST n cold table fan', 21, 'Cool Table fan9 ',readfile('Products\cellingfan\cellingfan10.jpg'),103.00,'celling fan');
+
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('ELBA table fan', 22, 'Cool Table fan',readfile('Products\tablefan\tablefan1.jpg'),103.00,'bladeless fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('SweetFull table fan', 10, 'Cool Table fan1',readfile('Products\tablefan\tablefan2.jpg'),103.00,'bladeless fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('KHIND table fan', 23, 'Cool Table fan2',readfile('Products\tablefan\tablefan3.jpg'),103.00,'bladeless fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('EAZYY black premium table fan', 40, 'Cool Table fan3',readfile('Products\tablefan\tablefan4.jpg'),103.00,'bladeless fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('EDC vintage rose gold table fan', 9, 'Cool Table fan4',readfile('Products\tablefan\tablefan5.jpg'),103.00,'bladeless fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('Handheld SAMSENG USBtable fan', 70, 'Cool Table fan5',readfile('Products\tablefan\tablefan6.jpg'),103.00,'bladeless fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('Fold n Swing table fan', 3, 'Cool Table fan6',readfile('Products\tablefan\tablefan7.jpg'),103.00,'bladeless fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('Modern table fan', 40, 'Cool Table fan7',readfile('Products\tablefan\tablefan8.jpg'),103.00,'bladeless fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('ELECTROLUX table fan', 60, 'Cool Table fan8',readfile('Products\tablefan\tablefan9.jpg'),103.00,'bladeless fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('MODEST n cold table fan', 21, 'Cool Table fan9 ',readfile('Products\tablefan\tablefan10.jpg'),103.00,'bladeless fan');
+
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('ELBA table fan', 22, 'Cool Table fan',readfile('Products\tablefan\tablefan1.jpg'),103.00,'table fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('SweetFull table fan', 10, 'Cool Table fan1',readfile('Products\tablefan\tablefan2.jpg'),103.00,'table fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('KHIND table fan', 23, 'Cool Table fan2',readfile('Products\tablefan\tablefan3.jpg'),103.00,'table fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('EAZYY black premium table fan', 40, 'Cool Table fan3',readfile('Products\tablefan\tablefan4.jpg'),103.00,'table fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('EDC vintage rose gold table fan', 9, 'Cool Table fan4',readfile('Products\tablefan\tablefan5.jpg'),103.00,'table fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('Handheld SAMSENG USBtable fan', 70, 'Cool Table fan5',readfile('Products\tablefan\tablefan6.jpg'),103.00,'table fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('Fold n Swing table fan', 3, 'Cool Table fan6',readfile('Products\tablefan\tablefan7.jpg'),103.00,'table fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('Modern table fan', 40, 'Cool Table fan7',readfile('Products\tablefan\tablefan8.jpg'),103.00,'table fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('ELECTROLUX table fan', 60, 'Cool Table fan8',readfile('Products\tablefan\tablefan9.jpg'),103.00,'table fan');
+INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('MODEST n cold table fan', 21, 'Cool Table fan9 ',readfile('Products\tablefan\tablefan10.jpg'),103.00,'table fan');
+
+sqlite3 order.db
+CREATE TABLE order (
+    cusname TEXT NOT NULL,
+    cus_addr TEXT NOT NULL,
+    cus_phoneno TEXT NOT NULL,
+    orderitem_name TEXT NOT NULL,
+    orderitem_qty INTEGER NOT NULL,
+    orderitem_totalprice DOUBLE NOT NULL
+);

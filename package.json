@@ -10,10 +10,12 @@
     "test": "jest"
   },
   "dependencies": {
+    "@expo/vector-icons": "^14.0.2",
     "@react-navigation/bottom-tabs": "^6.6.1",
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/stack": "^6.4.1",
     "axios": "^1.7.5",
+    "lottie-react-native": "^6.7.2",
     "react": "18.2.0",
     "react-native": "^0.74.5",
     "react-native-gesture-handler": "^2.18.1",
@@ -21,6 +23,7 @@
     "react-native-safe-area-context": "^4.10.8",
     "react-native-screens": "^3.34.0",
     "react-native-sqlite-storage": "^6.0.1",
+    "react-native-vector-icons": "^10.1.0",
     "socket.io-client": "^4.7.5"
   },
   "devDependencies": {
@@ -33,6 +36,7 @@
     "@react-native/typescript-config": "0.74.85",
     "@types/react": "^18.2.6",
     "@types/react-native-sqlite-storage": "^6.0.5",
+    "@types/react-native-vector-icons": "^6.4.18",
     "@types/react-test-renderer": "^18.0.0",
     "babel-jest": "^29.6.3",
     "eslint": "^8.19.0",
