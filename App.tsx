@@ -14,7 +14,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import HomePage from "./HomePage/HomePage.tsx";
 import ProfilePage from "./HomePage/ProfilePage.tsx";
 import SearchPage from "./HomePage/SearchPage.tsx";
-import Ionicons from "react-native-vector-icons/Ionicons";S
+import Ionicons from "react-native-vector-icons/Ionicons";
 import { createStackNavigator } from '@react-navigation/stack';
 
 const btmNav = createBottomTabNavigator();
