@@ -14,7 +14,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import HomePage from "./HomePage/HomePage.tsx";
 import ProfilePage from "./HomePage/ProfilePage.tsx";
 import SearchPage from "./HomePage/SearchPage.tsx";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import Ionicons from "react-native-vector-icons/Ionicons";S
 import { createStackNavigator } from '@react-navigation/stack';
 
 const btmNav = createBottomTabNavigator();
@@ -46,24 +46,50 @@ const App = ({route, navigation}: any) => {
             screenOptions={{
               headerShown: false,
               tabBarStyle:{
-                height: windowHeight * .06,
-              }
+                height: windowHeight * .07,
+              },
+              tabBarActiveTintColor: 'red',
             }}
           >
-              <btmNav.Screen 
-                name="Home" 
-                component={Home}
-                options={{
-                  tabBarIcon: ({focused}) => 
-                    <MaterialCommunityIcons 
-                      name = {focused ? "fan-auto" : "fan-alert"}
-                      size = {25}
-                      color = {focused ? "#5ed1f5" : "#676767"}
-                    />
-                }}   
-              />
-              <btmNav.Screen name="Profile" component={ProfilePage} />
-              <btmNav.Screen name="Profile2" component={ProfilePage} />
+            <btmNav.Screen 
+              name="Home" 
+              component={Home}
+              options={{
+                tabBarIcon: ({focused}) => 
+                  <Ionicons 
+                    name = {focused ? "home" : "home-outline"}
+                    size = {25}
+                    color = {focused ? "#0086ff" : "#676767"} // Updated color to #0086ff
+                  />
+              }}   
+            />
+
+            <btmNav.Screen 
+              name="Profile" 
+              component={ProfilePage}
+              options={{
+                tabBarIcon: ({focused}) => 
+                  <Ionicons 
+                    name = {focused ? "person" : "person-outline"}
+                    size = {25}
+                    color = {focused ? "#0086ff" : "#676767"} // Updated color to #0086ff
+                  />
+              }} 
+            />
+
+            <btmNav.Screen 
+              name="Profile2" 
+              component={ProfilePage}
+              options={{
+                tabBarIcon: ({focused}) => 
+                  <Ionicons 
+                    name = {focused ? "person" : "person-outline"}
+                    size = {25}
+                    color = {focused ? "#0086ff" : "#676767"} // Updated color to #0086ff
+                  />
+              }} 
+            />
+
           </btmNav.Navigator>
         </NavigationContainer>
       </SafeAreaView>
@@ -80,7 +106,6 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 3,
-    // right:20,
     fontSize: 20,
     color: 'blue',
   },

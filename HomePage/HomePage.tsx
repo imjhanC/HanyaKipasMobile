@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
   },
 
   individualProductContainer: {
-    flex: 1,
+    flex: 0.5,
     flexDirection: 'column',
     height: 400,
     width: '50%',
