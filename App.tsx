@@ -12,6 +12,7 @@ import {
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import HomePage from "./HomePage/HomePage.tsx";
+import OrderPage from "./HomePage/OrderPage.tsx";
 import ProfilePage from "./HomePage/ProfilePage.tsx";
 import SearchPage from "./HomePage/SearchPage.tsx";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -31,6 +32,7 @@ const Home = () => {
         <stack.Screen name="HomePage" component={HomePage} />
         <stack.Screen name="ProfilePage" component={ProfilePage} />
         <stack.Screen name="SearchPage" component={SearchPage} />
+        <stack.Screen name="OrderPage" component={OrderPage} />
       </stack.Navigator>
   );
 }
@@ -66,7 +68,7 @@ const App = ({route, navigation}: any) => {
 
             <btmNav.Screen 
               name="Order" 
-              component={ProfilePage}
+              component={OrderPage}
               options={{
                 tabBarIcon: ({focused}) => 
                   <MaterialCommunityIcons 
@@ -78,7 +80,7 @@ const App = ({route, navigation}: any) => {
             />
 
             <btmNav.Screen 
-              name="Settings" 
+              name="Profile" 
               component={ProfilePage}
               options={{
                 tabBarIcon: ({focused}) => 
