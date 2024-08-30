@@ -22,7 +22,8 @@ const App = ({router, navigation}: any) => {
     { id: 4, Type: "Ceiling Fan" }
   ]);
 
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<any[]>([
+  ]);
 
   useEffect(() => {
     // Fetch product data from Flask server
@@ -36,35 +37,30 @@ const App = ({router, navigation}: any) => {
       });
   }, []);
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filteredFans, setFilteredFans] = useState<any[]>([]);
+  const [searchQuery, setSearchQuery] = useState((router?.params?.search === undefined || router?.params?.search === null) ? '' : router?.params?.search);
+  const [category, setCategory] = useState('all fans')
 
-  function handleSearchQuery(query : any){
-    setSearchQuery((Object.keys(router.params.search).length === 0) ? router.params.search : query);
-    const filtered=products.filter( product => {
-      if(!(searchQuery.toLowerCase() === 'all fan' || searchQuery.toLowerCase() === 'all fans' )){
-        product.product_type.toLowerCase().includes(query.toLowerCase()) || product.product_name.toLowerCase().includes(query.toLowerCase());
-      }
-    })
-
-    setFilteredFans(filtered)
-  }
+  const filteredFans = products.filter(item =>
+    (category === 'all fans' || item.product_type === category) && (item.product_name.toLowerCase().includes(searchQuery.toLowerCase()) || item.product_type.toLowerCase().includes(searchQuery.toLowerCase()))
+  );
 
   //For rotating search bar text
-  const [placeholderText, setPlaceHolderText] = useState('Search.....')
-  useEffect(() => {
-    // Can use flask to retrieve fan names to place here or hardcode it lol
-    const placeHolderOptions = ['Bladeless fan.....', 'Over 9000 fan.....', 'I can not belive this exits fan....', 'Explore....'];
+  const [placeholderText, setPlaceHolderText] = useState('Search.....');
+  // useEffect(() => {
+  //   //handleSearchQuery('all fans');
 
-    let currentIndex = 0;
+  //   // Can use flask to retrieve fan names to place here or hardcode it lol
+  //   const placeHolderOptions = ['Bladeless fan.....', 'Over 9000 fan.....', 'I can not belive this exits fan....', 'Explore....'];
 
-    const intervalId = setInterval(() => {
-      currentIndex = (currentIndex + 1) % placeHolderOptions.length;
-      setPlaceHolderText(placeHolderOptions[currentIndex]);
-    }, 3000);
+  //   let currentIndex = 0;
 
-    return () => clearInterval(intervalId);
-  }, [])
+  //   const intervalId = setInterval(() => {
+  //     currentIndex = (currentIndex + 1) % placeHolderOptions.length;
+  //     setPlaceHolderText(placeHolderOptions[currentIndex]);
+  //   }, 3000);
+
+  //   return () => clearInterval(intervalId);
+  // }, []);
 
   // Function to handle image data
   const getImageSource = (imgBase64: string) => {
@@ -84,7 +80,7 @@ const App = ({router, navigation}: any) => {
             }}
           />
           <TouchableNativeFeedback 
-            onPress={() => navigation.navigate("SearchPage")}
+            onPress={() => navigation.navigate('SearchPage')}
           >
             <Text style={styles.searchText}>{placeholderText}</Text>
           </TouchableNativeFeedback>
@@ -106,13 +102,13 @@ const App = ({router, navigation}: any) => {
 
       <View style={styles.fanContainer}>
         <FlatList 
-          keyExtractor={item => item.id.toString()}
+          // keyExtractor={item => item.id.toString()}
           data={fanType}
           horizontal
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => {
             return (
-              <TouchableNativeFeedback onPress={() => handleSearchQuery(item.Type)}>
+              <TouchableNativeFeedback onPress={() => setSearchQuery(item.Type)}>
                 <View style={styles.fanTypeContainer}>
                   <Text style={styles.fanTypeText}>{item.Type}</Text>
                 </View>
@@ -124,8 +120,8 @@ const App = ({router, navigation}: any) => {
 
       <View style={styles.productContainer}>
         <FlatList
-          keyExtractor={item => item.id.toString()}
-          data={searchQuery.length > 0 ? filteredFans: products}
+          // keyExtractor={item => item.id.toString()}
+          data={filteredFans}
           showsVerticalScrollIndicator={false}
           horizontal={false}
           numColumns={2}

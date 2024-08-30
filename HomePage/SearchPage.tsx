@@ -42,7 +42,7 @@ const App = ({router, navigation}: any) =>{
     <SafeAreaView style={styles.allContainer}>
         <View style={styles.topNavContainer}>
             <TouchableNativeFeedback
-                onPress={() => navigation.goBack()}
+                onPress={() => navigation.navigate('HomePage')}
             >
                 <MaterialCommunityIcons
                     name="arrow-left"
@@ -59,7 +59,7 @@ const App = ({router, navigation}: any) =>{
                     style={styles.input}
                     value={querySearch}
                     onChangeText={(text) => setQuerySearch(text)}
-                    onSubmitEditing={navigation.navigate('HomePage', {
+                    onSubmitEditing={() => navigation.navigate('HomePage', {
                         search: querySearch
                     })}
                     placeholder="Type Here bish"
