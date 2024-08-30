@@ -36,7 +36,7 @@ const App = ({router, navigation}: any) =>{
   }
   ]);
 
-  const [textInput, setTextInput] = useState('')
+  const [querySearch, setQuerySearch] = useState('')
 
   return(
     <SafeAreaView style={styles.allContainer}>
@@ -57,8 +57,11 @@ const App = ({router, navigation}: any) =>{
             <View style={styles.searchContainer}>
                 <TextInput
                     style={styles.input}
-                    onChangeText={setTextInput}
-                    value={textInput}
+                    value={querySearch}
+                    onChangeText={(text) => setQuerySearch(text)}
+                    onSubmitEditing={navigation.navigate('HomePage', {
+                        search: querySearch
+                    })}
                     placeholder="Type Here bish"
                 />
                 <MaterialCommunityIcons  
@@ -78,7 +81,9 @@ const App = ({router, navigation}: any) =>{
                 data = {recommendation}
                 renderItem={({ item }) => {
                     return(
-                        <TouchableNativeFeedback>
+                        <TouchableNativeFeedback onPress={() => {
+                            navigation.navigate('HomePage', {search: item.Type})
+                        }}>
                             <View style={styles.recoView}>
                                 <Text style={styles.recoText}>{item.Type}</Text>
                             </View>

@@ -36,6 +36,20 @@ const App = ({router, navigation}: any) => {
       });
   }, []);
 
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredFans, setFilteredFans] = useState<any[]>([]);
+
+  function handleSearchQuery(query : any){
+    setSearchQuery((Object.keys(router.params.search).length === 0) ? router.params.search : query);
+    const filtered=products.filter( product => {
+      if(!(searchQuery.toLowerCase() === 'all fan' || searchQuery.toLowerCase() === 'all fans' )){
+        product.product_type.toLowerCase().includes(query.toLowerCase()) || product.product_name.toLowerCase().includes(query.toLowerCase());
+      }
+    })
+
+    setFilteredFans(filtered)
+  }
+
   // Function to handle image data
   const getImageSource = (imgBase64: string) => {
     return { uri: `data:image/jpeg;base64,${imgBase64}` };
@@ -82,7 +96,7 @@ const App = ({router, navigation}: any) => {
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => {
             return (
-              <TouchableNativeFeedback>
+              <TouchableNativeFeedback onPress={() => handleSearchQuery(item.Type)}>
                 <View style={styles.fanTypeContainer}>
                   <Text style={styles.fanTypeText}>{item.Type}</Text>
                 </View>
@@ -95,7 +109,7 @@ const App = ({router, navigation}: any) => {
       <View style={styles.productContainer}>
         <FlatList
           keyExtractor={item => item.id.toString()}
-          data={products}
+          data={searchQuery.length > 0 ? filteredFans: products}
           showsVerticalScrollIndicator={false}
           horizontal={false}
           numColumns={2}
@@ -175,7 +189,7 @@ const styles = StyleSheet.create({
   individualProductContainer: {
     flex: 0.5,
     flexDirection: 'column',
-    height: 400,
+    height: 300,
     width: '50%',
     textAlign: 'center',
     margin: 5,
@@ -186,14 +200,14 @@ const styles = StyleSheet.create({
   },
   productImg: {
     height: '80%',
-    width: '95%',
+    width: '99%',
   },
   productName: {
     marginTop: -50,
-    fontSize: 35,
+    fontSize: 25,
     fontWeight: '700',
     color: 'black',
-    textAlign: 'center',
+    textAlign: 'left',
   },
   // productDesc: {
   //   fontSize: 25,
