@@ -50,6 +50,22 @@ const App = ({router, navigation}: any) => {
     setFilteredFans(filtered)
   }
 
+  //For rotating search bar text
+  const [placeholderText, setPlaceHolderText] = useState('Search.....')
+  useEffect(() => {
+    // Can use flask to retrieve fan names to place here or hardcode it lol
+    const placeHolderOptions = ['Bladeless fan.....', 'Over 9000 fan.....', 'I can not belive this exits fan....', 'Explore....'];
+
+    let currentIndex = 0;
+
+    const intervalId = setInterval(() => {
+      currentIndex = (currentIndex + 1) % placeHolderOptions.length;
+      setPlaceHolderText(placeHolderOptions[currentIndex]);
+    }, 3000);
+
+    return () => clearInterval(intervalId);
+  }, [])
+
   // Function to handle image data
   const getImageSource = (imgBase64: string) => {
     return { uri: `data:image/jpeg;base64,${imgBase64}` };
@@ -70,7 +86,7 @@ const App = ({router, navigation}: any) => {
           <TouchableNativeFeedback 
             onPress={() => navigation.navigate("SearchPage")}
           >
-            <Text style={styles.searchText}>CLIC ME BISH</Text>
+            <Text style={styles.searchText}>{placeholderText}</Text>
           </TouchableNativeFeedback>
         </View>
 

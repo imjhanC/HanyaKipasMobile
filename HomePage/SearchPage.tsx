@@ -92,6 +92,9 @@ const App = ({router, navigation}: any) =>{
                 }}
             />
         </View>
+        <View>
+            
+        </View>
     </SafeAreaView>
   );
 }
