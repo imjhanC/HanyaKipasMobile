@@ -108,8 +108,10 @@ const App = ({router, navigation}: any) =>{
                 }}
             />
         </View>
-        <View>
-            
+        <View style={{paddingTop: 50}}>
+            <Image 
+                source={require('./Fan.gif')}
+            />
         </View>
     </SafeAreaView>
   );
