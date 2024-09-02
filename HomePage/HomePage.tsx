@@ -14,7 +14,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 const windowHeight = Dimensions.get('window').height;
 
-const App = ({router, navigation}: any) => {
+const App = ({route, navigation}: any) => {
   const [fanType, setFanType] = useState([
     { id: 1, Type: "All Fans" },
     { id: 2, Type: "Bladeless Fan" },
@@ -37,11 +37,15 @@ const App = ({router, navigation}: any) => {
       });
   }, []);
 
-  const [searchQuery, setSearchQuery] = useState((router?.params?.search === undefined || router?.params?.search === null) ? '' : router?.params?.search);
-  const [category, setCategory] = useState('all fans')
+  const [searchQuery, setSearchQuery] = useState('');
+  useEffect(() => {
+    if (route?.params?.search !== undefined && route?.params?.search !== null) {
+      setSearchQuery(route?.params?.search);
+    }
+  }, [route?.params?.search]);
 
   const filteredFans = products.filter(item =>
-    (category === 'all fans' || item.product_type === category) && (item.product_name.toLowerCase().includes(searchQuery.toLowerCase()) || item.product_type.toLowerCase().includes(searchQuery.toLowerCase()))
+    (item.product_name.toLowerCase().includes(searchQuery.toLowerCase()) || item.product_type.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   //For rotating search bar text
@@ -119,7 +123,7 @@ const App = ({router, navigation}: any) => {
       <View style={styles.productContainer}>
         <FlatList
           // keyExtractor={item => item.id.toString()}
-          data={filteredFans}
+          data={searchQuery.toLowerCase() === 'all fans' ? products : filteredFans}
           showsVerticalScrollIndicator={false}
           horizontal={false}
           numColumns={2}

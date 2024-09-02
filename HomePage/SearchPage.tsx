@@ -36,7 +36,23 @@ const App = ({router, navigation}: any) =>{
   }
   ]);
 
-  const [querySearch, setQuerySearch] = useState('')
+  const [querySearch, setQuerySearch] = useState('');
+
+  //For rotating search bar text
+  const [placeholderText, setPlaceHolderText] = useState('Search.....');
+  useEffect(() => {
+    // Can use flask to retrieve fan names to place here or hardcode it lol
+    const placeHolderOptions = ['Bladeless fan.....', 'Over 9000 fan.....', 'I can not belive this exits fan....', 'Explore....'];
+
+    let currentIndex = 0;
+
+    const intervalId = setInterval(() => {
+      currentIndex = (currentIndex + 1) % placeHolderOptions.length;
+      setPlaceHolderText(placeHolderOptions[currentIndex]);
+    }, 3000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   return(
     <SafeAreaView style={styles.allContainer}>
@@ -62,7 +78,7 @@ const App = ({router, navigation}: any) =>{
                     onSubmitEditing={() => navigation.navigate('HomePage', {
                         search: querySearch
                     })}
-                    placeholder="Type Here bish"
+                    placeholder={placeholderText}
                 />
                 <MaterialCommunityIcons  
                     name="cloud-search-outline"
