@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
   individualProductContainer: {
     flex: 0.5,
     flexDirection: 'column',
-    height: 300,
+    height: 400,
     textAlign: 'center',
     margin: 5,
     backgroundColor: 'white', 
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
     marginLeft:'auto',
     marginRight:'auto',
     width: '85%',
-    height:'60%',
+    height:'63%',
   },
   productImg: {
     height: '100%',
