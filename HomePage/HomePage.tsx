@@ -108,15 +108,19 @@ const App = ({route, navigation}: any) => {
           data={fanType}
           horizontal
           showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) => {
+          renderItem={({ item,index }) => {
             return (
-              <TouchableNativeFeedback onPress={() => setSearchQuery(item.Type)}>
-                <View style={styles.fanTypeContainer}>
-                  <Text style={styles.fanTypeText}>{item.Type}</Text>
-                </View>
-              </TouchableNativeFeedback>
+              <View style={styles.fanTypeContainer}>
+                <TouchableNativeFeedback onPress={() => setSearchQuery(item.Type)}>
+                  <View >
+                    <Text style={styles.fanTypeText}>{item.Type}</Text>
+                  </View>
+                  
+                </TouchableNativeFeedback>
+              </View>
             );
           }}
+          ItemSeparatorComponent={() => <View style={styles.gap} />}
         />
       </View>
 
@@ -178,7 +182,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 8,
     color: '#666',
-    backgroundColor: '#e9e9e9',
+    backgroundColor: '#d9d9d9',
   },
   searchText: {
     marginLeft: 15,
@@ -192,7 +196,7 @@ const styles = StyleSheet.create({
     paddingTop: 8,
   },
   fanContainer: {
-    marginBottom: 10,
+    paddingBottom: 10,
     color: 'black',
   },
   fanTypeContainer: {
@@ -202,12 +206,17 @@ const styles = StyleSheet.create({
     width: 150,
     borderRadius: 50,
     borderWidth: 2,
-    borderColor: '#7e7e7e',
+    borderColor: '#487df7',
     justifyContent: 'center',
+    alignItems: 'center'
   },
   fanTypeText: {
     fontSize: 16,
+    fontWeight: '600',
     color: 'black',
+  },
+  gap:{
+    width:10,
   },
   productContainer: {
     backgroundColor: '#ececec',
@@ -215,7 +224,7 @@ const styles = StyleSheet.create({
   individualProductContainer: {
     flex: 0.5,
     flexDirection: 'column',
-    height: 300,
+    height: 400,
     textAlign: 'center',
     margin: 5,
     backgroundColor: 'white', 
@@ -227,7 +236,7 @@ const styles = StyleSheet.create({
     marginLeft:'auto',
     marginRight:'auto',
     width: '85%',
-    height:'60%',
+    height:'63%',
   },
   productImg: {
     height: '100%',
@@ -262,7 +271,8 @@ const styles = StyleSheet.create({
     alignContent:'center',
     color: '#4b4b4b',
     fontSize: 12,
-  }
+  },
+  
 })
 
 export default App;
