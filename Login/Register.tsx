@@ -1,39 +1,58 @@
 import React, { useState, useRef } from 'react';
-import { View, TextInput, Text, Alert, StyleSheet, Image, Animated, TouchableWithoutFeedback } from 'react-native';
+import { View, TextInput, Dimensions, Text, Alert, StyleSheet, TouchableOpacity, Animated, TouchableWithoutFeedback, TouchableNativeFeedback } from 'react-native';
 import axios from 'axios';
-import { useNavigation } from '@react-navigation/native';
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-const LoginScreen = () => {
+const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
 
-  const navigation = useNavigation();
+const RegisterPage = ({navigation}:any) => {
   
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [passwordChk, setPasswordChk] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [passwordChkVisible, setPasswordChkVisible] = useState(false);
+
   // Create an animated value for scaling the button
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
-  const handleLogin = async () => {
-    if (!username || !password) {
-      Alert.alert("Error", "Please enter both username and password.");
+  const handleRegister = async () => {
+    if (!username || !password || !passwordChk) {
+      Alert.alert("Error", "Please enter username, password and confirm password.");
       return;
     }
-
+    else if (password !== passwordChk) {
+      Alert.alert("Error", "Passwords do not match.");
+      return; 
+    }
     setLoading(true);
     try {
-      const response = await axios.post('http://127.0.0.1:3000/login', {
+      const response = await axios.post('http://127.0.0.1:3000/register', {
         username,
         password,
       });
 
-      if (response.status === 200) {
-        Alert.alert("Success", "Login successful!");
-        // Navigate to the next screen or perform other actions on successful login
+      if (response.status === 201) {
+        Alert.alert(
+          "Success", 
+          "User registered successfully!", 
+          [
+            { 
+              text: "OK", 
+              onPress: () => navigation.navigate('Login') 
+            }
+          ]
+        );
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        Alert.alert("Error", "Invalid username or password.");
+        if (error.response && error.response.status === 409) {
+          Alert.alert("Error", "Username already exists.");
+        } else {
+          Alert.alert("Error", "Registration failed. Please try again.");
+        }
       } else {
         console.error(error);
         Alert.alert("Error", "Something went wrong. Please try again later.");
@@ -55,37 +74,78 @@ const LoginScreen = () => {
       toValue: 1, // Scale back to original size
       friction: 3,
       useNativeDriver: true,
-    }).start(() => handleLogin()); // Trigger login on release
+    }).start(() => handleRegister());
   };
 
   return (
     <View style={styles.container}>
-      <Image 
-        style={styles.image}
-        source={require('../HanyaKipasLogo.png')}
-      />
-      <Text style={styles.title}>Welcome to HanyaKipas's Login Page</Text>
+      <TouchableNativeFeedback
+          onPress={() => navigation.navigate('Profile',{screen: 'Login'})}
+        >
+          <MaterialCommunityIcons
+            name="arrow-left"
+            style={{
+              fontSize: 45,
+              paddingLeft: 5,
+              color: '#487df7',
+              marginBottom:'auto'
+            }}
+          />
+        </TouchableNativeFeedback>
+      
+      <Text style={styles.title}>Welcome to HanyaKipas's Register Page</Text>
       <TextInput
-        style={styles.input}
+        style={styles.usernameInput}
         placeholder="Username"
         value={username}
         onChangeText={setUsername}
         autoCapitalize="none"
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.passwordInput}
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry={!passwordVisible}
+        />
+        <TouchableOpacity
+            onPress={() => setPasswordVisible(!passwordVisible)}
+            style={styles.iconContainer}
+          >
+            <MaterialCommunityIcons
+              name={passwordVisible ? "eye" : "eye-off"}
+              size={24}
+              color="#c0c0c0"
+            />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.passwordInput}
+          placeholder="Confim Password"
+          value={passwordChk}
+          onChangeText={setPasswordChk}
+          secureTextEntry={!passwordChkVisible}
+        />
+        <TouchableOpacity
+            onPress={() => setPasswordChkVisible(!passwordChkVisible)}
+            style={styles.iconContainer}
+          >
+            <MaterialCommunityIcons
+              name={passwordChkVisible ? "eye" : "eye-off"}
+              size={24}
+              color="#c0c0c0"
+            />
+        </TouchableOpacity>
+      </View>
       <TouchableWithoutFeedback
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
         disabled={loading}
       >
         <Animated.View style={[styles.button, { transform: [{ scale: scaleAnim }] }]}>
-          <Text style={styles.buttonText}>{loading ? "Logging in..." : "Login"}</Text>
+          <Text style={styles.buttonText}>{loading ? "Registering..." : "Register"}</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
 
@@ -98,31 +158,54 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 16,
-    backgroundColor: '#383838',
+    backgroundColor: '#fff',
   },
   title: {
     fontSize: 24,
     fontFamily: 'tahoma',
+    fontWeight:'700',
     color: '#00a6e3',
-    marginBottom: 24,
+    marginBottom: 'auto',
     textAlign: 'center',
   },
-  input: {
+  inputContainer:{
+    flexDirection:'row',
+    width: windowWidth*0.9,
+  },
+  usernameInput:{
     height: 50,
+    width: '100%',
+    marginLeft:'auto',
+    marginRight:'auto',
     borderColor: '#00a6e3',
     borderWidth: 5,
     fontSize: 18,
-    paddingHorizontal: 8,
+    paddingHorizontal: 15,
     marginBottom: 30,
     backgroundColor: 'white',
     borderRadius: 20,
+    color:'black',
   },
-  image: {
-    marginVertical: -50,
-    alignContent: 'center',
-    maxWidth: 400,
-    maxHeight: 300,
-    marginBottom: 24,
+  passwordInput: {
+    height: 50,
+    width: '100%',
+    marginLeft:'auto',
+    marginRight:'auto',
+    borderColor: '#00a6e3',
+    borderWidth: 5,
+    fontSize: 18,
+    marginBottom: 30,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    color:'black',
+    paddingLeft:15,
+    paddingRight:50
+  },
+  iconContainer: {
+    position: 'absolute',
+    top:'15%',
+    right: 15,
+    zIndex:1
   },
   button: {
     marginVertical: 40,
@@ -137,6 +220,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
+  
 });
 
-export default LoginScreen;
+export default RegisterPage;
