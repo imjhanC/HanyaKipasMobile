@@ -1,8 +1,13 @@
 import React, { useState, useRef } from 'react';
 import { View, TextInput, Text, Alert, StyleSheet, Image, Animated, TouchableWithoutFeedback } from 'react-native';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
+import Registerpage from './Register.tsx';
 
 const LoginScreen = () => {
+
+  const navigation = useNavigation();
+  
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
@@ -54,6 +59,11 @@ const LoginScreen = () => {
     }).start(() => handleLogin()); // Trigger login on release
   };
 
+   // Add the function to handle the press on the "Register" link
+  const handleRegisterPress = () => {
+    navigation.navigate('Register'); // Replace 'Register' with the name of your Register screen route
+  };
+
   return (
     <View style={styles.container}>
       <Image 
@@ -84,6 +94,14 @@ const LoginScreen = () => {
           <Text style={styles.buttonText}>{loading ? "Logging in..." : "Login"}</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
+
+      <TouchableWithoutFeedback onPress={handleRegisterPress}>
+        <Text style={styles.registerText}>
+          New to HanyaKipas?{" "}
+          <Text style={styles.registerLink}>Register an account here</Text>
+        </Text>
+      </TouchableWithoutFeedback>
+      
     </View>
   );
 };
@@ -131,6 +149,16 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  registerText: {
+    marginTop: 20,
+    textAlign: 'center',
+    fontSize: 16,
+    color: '#fff',
+  },
+  registerLink: {
+    color: '#00a6e3',
+    textDecorationLine: 'underline',
   },
 });
 
