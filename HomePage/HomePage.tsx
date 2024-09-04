@@ -218,10 +218,10 @@ const styles = StyleSheet.create({
   },
   productName: {
     marginTop: -50,
-    fontSize: 25,
-    fontWeight: '700',
+    fontSize: 20,
+    fontWeight: '600',
     color: 'black',
-    textAlign: 'left',
+    textAlign: 'center',
   },
   // productDesc: {
   //   fontSize: 25,
