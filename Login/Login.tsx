@@ -1,16 +1,17 @@
 import React, { useState, useRef } from 'react';
-import { View, TextInput, Text, Alert, StyleSheet, Image, Animated, TouchableWithoutFeedback } from 'react-native';
+import { View, TextInput, Text, TouchableOpacity, Dimensions, Alert, StyleSheet, Image, Animated, TouchableWithoutFeedback } from 'react-native';
 import axios from 'axios';
-import { useNavigation } from '@react-navigation/native';
-import Registerpage from './Register.tsx';
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-const LoginScreen = () => {
+const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
 
-  const navigation = useNavigation();
+const LoginScreen = ({navigation}:any) => {
   
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
   
   // Create an animated value for scaling the button
   const scaleAnim = useRef(new Animated.Value(1)).current;
@@ -59,11 +60,6 @@ const LoginScreen = () => {
     }).start(() => handleLogin()); // Trigger login on release
   };
 
-   // Add the function to handle the press on the "Register" link
-  const handleRegisterPress = () => {
-    navigation.navigate('Register'); // Replace 'Register' with the name of your Register screen route
-  };
-
   return (
     <View style={styles.container}>
       <Image 
@@ -78,13 +74,25 @@ const LoginScreen = () => {
         onChangeText={setUsername}
         autoCapitalize="none"
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
+      <View style={styles.passwordContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry={!passwordVisible}
+        />
+        <TouchableOpacity
+              onPress={() => setPasswordVisible(!passwordVisible)}
+              style={styles.iconContainer}
+            >
+              <MaterialCommunityIcons
+                name={passwordVisible ? "eye" : "eye-off"}
+                size={24}
+                color="#c0c0c0"
+              />
+        </TouchableOpacity>
+      </View>
       <TouchableWithoutFeedback
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
@@ -95,7 +103,7 @@ const LoginScreen = () => {
         </Animated.View>
       </TouchableWithoutFeedback>
 
-      <TouchableWithoutFeedback onPress={handleRegisterPress}>
+      <TouchableWithoutFeedback onPress={()=> navigation.navigate('Profile',{screen:'RegisterPage'})}>
         <Text style={styles.registerText}>
           New to HanyaKipas?{" "}
           <Text style={styles.registerLink}>Register an account here</Text>
@@ -108,10 +116,12 @@ const LoginScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
+    padding:10,
     flex: 1,
     justifyContent: 'center',
-    padding: 16,
     backgroundColor: '#383838',
+    width: windowWidth,
+    height: windowHeight
   },
   title: {
     fontSize: 24,
@@ -122,13 +132,18 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 50,
+    width:'100%',
+    marginLeft:'auto',
+    marginRight:'auto',
     borderColor: '#00a6e3',
     borderWidth: 5,
     fontSize: 18,
-    paddingHorizontal: 8,
     marginBottom: 30,
     backgroundColor: 'white',
     borderRadius: 20,
+    color:'black',
+    paddingLeft:15,
+    paddingRight:50
   },
   image: {
     marginVertical: -50,
@@ -159,6 +174,15 @@ const styles = StyleSheet.create({
   registerLink: {
     color: '#00a6e3',
     textDecorationLine: 'underline',
+  },
+  passwordContainer:{
+    flexDirection:'row',
+  },
+  iconContainer: {
+    position: 'absolute',
+    top:'15%',
+    right: 15,
+    zIndex:1
   },
 });
 
