@@ -6,7 +6,7 @@ import base64
 app = Flask(__name__)
 CORS(app)
 
-def get_db_connection():
+def get_db_connection():  #For accessing user database 
     conn = sqlite3.connect('users.db')
     conn.row_factory = sqlite3.Row  # This allows you to access the columns by name
     return conn
