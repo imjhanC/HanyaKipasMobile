@@ -19,7 +19,8 @@ const App = ({route, navigation}: any) => {
     { id: 1, Type: "All Fans" },
     { id: 2, Type: "Bladeless Fan" },
     { id: 3, Type: "Table Fan" },
-    { id: 4, Type: "Ceiling Fan" }
+    { id: 4, Type: "Ceiling Fan" },
+    { id: 5, Type: "AirCond"}
   ]);
 
   const [products, setProducts] = useState<any[]>([
@@ -242,7 +243,7 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     resizeMode: 'cover',
-    backgroundColor:'red'
+    backgroundColor:'#487df7'
   },
   productDetailContainer:{
     flex: 1
