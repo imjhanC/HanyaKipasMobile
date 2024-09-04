@@ -136,18 +136,21 @@ const App = ({route, navigation}: any) => {
                   product_qty: item.product_qty,
                   product_desc: item.product_desc,
                   product_img: item.product_img,
-                  product_price: item.product_type,
+                  product_price: item.product_price,
                   product_type: item.product_type,
                 }})}>
                 <View style={styles.individualProductContainer}>
                   <View style={styles.productImgContainer}>
-                    <Image 
+                    <Image
                       source={getImageSource(item.product_img)} 
                       style={styles.productImg}
                     />
                   </View>
-                  <Text style={styles.productName}>{item.product_name}</Text>
-                  <Text style={styles.productDesc}>{item.product_desc}</Text>
+                  <View style={styles.productDetailContainer}>
+                    <Text style={styles.productName}>{item.product_name}</Text>
+                    <Text style={styles.productType}>{item.product_type}</Text>
+                    <Text style={styles.productPrice}>RM {item.product_price}</Text>
+                  </View>
                 </View>
               </TouchableNativeFeedback>
             );
@@ -213,31 +216,53 @@ const styles = StyleSheet.create({
     flex: 0.5,
     flexDirection: 'column',
     height: 300,
-    width: '50%',
     textAlign: 'center',
     margin: 5,
+    backgroundColor: 'white', 
+    elevation: 5  
   },
   productImgContainer: {
     alignItems: 'center',
-    paddingTop: 5,
+    marginTop: 3,
+    marginLeft:'auto',
+    marginRight:'auto',
+    width: '85%',
+    height:'60%',
   },
   productImg: {
-    height: '80%',
-    width: '99%',
+    height: '100%',
+    width: '100%',
+    resizeMode: 'cover',
+    backgroundColor:'red'
+  },
+  productDetailContainer:{
+    flex: 1
   },
   productName: {
-    marginTop: -50,
-    fontSize: 20,
-    fontWeight: '600',
-    color: 'black',
-    textAlign: 'center',
-  },
-  productDesc: {
+    flex: 0.7,
+    paddingTop:2,
+    paddingLeft: 7,
     fontSize: 25,
+    fontWeight: '900',
+    color: 'black',
+  },
+  productPrice: {
+    flex:0.2,
+    fontSize: 25,
+    marginTop: 'auto',
     fontWeight: '400',
     color: '#4b4b4b',
     textAlign: 'center',
+    paddingBottom:5
   },
+  productType:{
+    flex:0.1,
+    marginRight:'auto',
+    marginLeft:'auto',
+    alignContent:'center',
+    color: '#4b4b4b',
+    fontSize: 12,
+  }
 })
 
 export default App;
