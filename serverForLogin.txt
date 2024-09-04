@@ -76,3 +76,15 @@ CREATE TABLE order (
     orderitem_qty INTEGER NOT NULL,
     orderitem_totalprice DOUBLE NOT NULL
 );
+
+sqlite3 cartItem.db
+CREATE TABLE cart_items (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    product_id INTEGER NOT NULL,
+    quantity INTEGER NOT NULL,
+    FOREIGN KEY(user_id) REFERENCES users(id),
+    FOREIGN KEY(product_id) REFERENCES products(id)
+);
+
+INSERT INTO cart_items (user_id, product_id, quantity) VALUES (1, 101, 3);

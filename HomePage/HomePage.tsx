@@ -90,7 +90,7 @@ const App = ({route, navigation}: any) => {
 
         <View style={styles.headerRightContainer}>
           <TouchableNativeFeedback
-            onPress={() => navigation.navigate('Shoppingcart')}
+            onPress={() => navigation.navigate('Home',{screen:'ShoppingCart'})}
           >
             <MaterialCommunityIcons name="cart-outline"
               style={{
@@ -129,7 +129,16 @@ const App = ({route, navigation}: any) => {
           numColumns={2}
           renderItem={({ item }) => {
             return (
-              <TouchableNativeFeedback>
+              <TouchableNativeFeedback onPress={() => navigation.navigate('Home',{
+                screen:'ProductPage',
+                params:{
+                  product_name: item.product_name,
+                  product_qty: item.product_qty,
+                  product_desc: item.product_desc,
+                  product_img: item.product_img,
+                  product_price: item.product_type,
+                  product_type: item.product_type,
+                }})}>
                 <View style={styles.individualProductContainer}>
                   <View style={styles.productImgContainer}>
                     <Image 
@@ -138,7 +147,7 @@ const App = ({route, navigation}: any) => {
                     />
                   </View>
                   <Text style={styles.productName}>{item.product_name}</Text>
-                  {/* <Text style={styles.productDesc}>{item.product_desc}</Text> */}
+                  <Text style={styles.productDesc}>{item.product_desc}</Text>
                 </View>
               </TouchableNativeFeedback>
             );
@@ -223,12 +232,12 @@ const styles = StyleSheet.create({
     color: 'black',
     textAlign: 'center',
   },
-  // productDesc: {
-  //   fontSize: 25,
-  //   fontWeight: '400',
-  //   color: '#4b4b4b',
-  //   textAlign: 'center',
-  // },
+  productDesc: {
+    fontSize: 25,
+    fontWeight: '400',
+    color: '#4b4b4b',
+    textAlign: 'center',
+  },
 })
 
 export default App;
