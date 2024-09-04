@@ -12,8 +12,13 @@ import {
     ScrollView,
     Image,
 } from 'react-native';
+import Login from '../Login/Login.tsx';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-const App = (navigation: any) =>{
+const Stack = createStackNavigator();
+
+const App = ({ navigation }: { navigation: any }) =>{
     const [text, onChangeText] = React.useState();
     
     const user = {
@@ -29,7 +34,8 @@ const App = (navigation: any) =>{
           </View>
           <Text style={styles.name}>{user.name}</Text>
           <Text style={styles.email}>{user.email}</Text>
-
+          <Button title="Click Here for Login" onPress={() => navigation.navigate('Login')} />
+          <Text></Text>
         </ScrollView>
       );
     };
