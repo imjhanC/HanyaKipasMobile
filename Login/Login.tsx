@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, Alert, StyleSheet } from 'react-native';
+import { View, TextInput, Button, Text, Alert, StyleSheet,Image } from 'react-native';
 import axios from 'axios';
 
 const LoginScreen = () => {
@@ -38,6 +38,10 @@ const LoginScreen = () => {
 
   return (
     <View style={styles.container}>
+      <Image 
+        style={styles.image}
+        source={require('../HanyaKipasLogo.png')}
+      />
       <Text style={styles.title}>Login</Text>
       <TextInput
         style={styles.input}
@@ -67,6 +71,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 16,
+    backgroundColor: '#383838', // Light gray background color
   },
   title: {
     fontSize: 24,
@@ -79,6 +84,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 12,
     paddingHorizontal: 8,
+  },
+  image: {
+    marginVertical: -50,
+    alignContent: 'center',
+    maxWidth: 400,
+    maxHeight: 300,
+    marginBottom: 24, // Add some margin at the bottom of the image
   },
 });
 
