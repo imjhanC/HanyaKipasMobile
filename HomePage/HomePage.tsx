@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
   productImg: {
     height: '100%',
     width: '100%',
-    resizeMode: 'cover',
+    resizeMode: 'stretch',
     backgroundColor:'#487df7'
   },
   productDetailContainer:{
