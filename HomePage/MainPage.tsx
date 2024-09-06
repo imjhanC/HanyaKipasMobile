@@ -15,6 +15,7 @@ import HomePage from "./HomePage.tsx";
 import ProfilePage from "./ProfilePage.tsx";
 import SearchPage from "./SearchPage.tsx";
 import ProductPage from "./ProductPage.tsx";
+import Login from "../Login/Login.tsx";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -22,10 +23,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 const btmNav = createBottomTabNavigator();
 const stack = createStackNavigator(); 
 
-const Home = () => {
+const Home = (route : any) => {
   return(
     <stack.Navigator
-      initialRouteName='HomePage'
+      initialRouteName={route?.params?.loginCheck === 1 ? 'HomePage' : 'Login'}
       screenOptions={{
         headerShown: false
       }}

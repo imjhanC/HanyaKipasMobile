@@ -96,6 +96,7 @@ const LoginScreen = ({navigation}:any) => {
       <TouchableWithoutFeedback
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
+        onPress = {() => navigation.navigate('HomePage', {loginCheck: 1})}
         disabled={loading}
       >
         <Animated.View style={[styles.button, { transform: [{ scale: scaleAnim }] }]}>
