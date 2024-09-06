@@ -35,6 +35,7 @@ const Home = (route : any) => {
       <stack.Screen name="ProfilePage" component={ProfilePage} />
       <stack.Screen name="SearchPage" component={SearchPage} />
       <stack.Screen name="ProductPage" component={ProductPage} />
+      <stack.Screen name='Login' component={Login} />
     </stack.Navigator>
   );
 }
