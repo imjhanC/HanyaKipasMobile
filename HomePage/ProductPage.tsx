@@ -50,38 +50,38 @@ export default App;
 
 // Add appropriate styles
 const styles = StyleSheet.create({
-  productPageContainer: {
+   productPageContainer: {
     flex: 1,
-    padding: 16,
-    backgroundColor: '#fff',
+    padding: 8,  // Adjusted padding
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',  // Semi-transparent black tint
   },
   productImg: {
-    width: 300,
-    height: 300,
+    width: '100%',
+    height: 200,
     resizeMode: 'contain',
-    marginBottom: 16,
+    marginBottom: 12,
   },
   productName: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  productDesc: {
-    fontSize: 16,
-    color: '#666',
-    marginBottom: 8,
-  },
-  productQty: {
-    fontSize: 16,
-    marginBottom: 8,
-  },
-  productPrice: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 8,
+    marginBottom: 6,
+  },
+  productDesc: {
+    fontSize: 14,
+    color: '#666',
+    marginBottom: 6,
+  },
+  productQty: {
+    fontSize: 14,
+    marginBottom: 6,
+  },
+  productPrice: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 6,
   },
   productType: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#666',
   },
 });
