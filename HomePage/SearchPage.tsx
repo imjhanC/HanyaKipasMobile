@@ -42,7 +42,7 @@ const App = ({router, navigation}: any) =>{
   const [placeholderText, setPlaceHolderText] = useState('Search.....');
   useEffect(() => {
     // Can use flask to retrieve fan names to place here or hardcode it lol
-    const placeHolderOptions = ['Bladeless fan.....', 'Over 9000 fan.....', 'I can not belive this exits fan....', 'Explore....'];
+    const placeHolderOptions = ['Bladeless fan....', 'Over 9000 fans available....', 'Type here to search for fans....', 'Explore our fans....'];
 
     let currentIndex = 0;
 
