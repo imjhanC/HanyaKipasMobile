@@ -33,10 +33,21 @@ const Home = () => {
         }}
       >
         <stack.Screen name="HomePage" component={HomePage} />
-        <stack.Screen name="ProfilePage" component={ProfilePage} />
         <stack.Screen name="SearchPage" component={SearchPage} />
         <stack.Screen name="OrderPage" component={OrderPage} />
         <stack.Screen name="ProductPage" component={ProductPage} />
+      </stack.Navigator>
+  );
+}
+
+const Profile = () => {
+  return(
+      <stack.Navigator
+        screenOptions={{
+          headerShown: false
+        }}
+      >
+        <stack.Screen name="ProfilePage" component={ProfilePage} />
         <stack.Screen name="RegisterPage" component={RegisterPage} />
         <stack.Screen name="Login" component={LoginPage} />
       </stack.Navigator>
@@ -87,7 +98,7 @@ const App = ({route, navigation}: any) => {
 
             <btmNav.Screen 
               name="Profile" 
-              component={ProfilePage}
+              component={Profile}
               options={{
                 tabBarIcon: ({focused}) => 
                   <MaterialCommunityIcons 
