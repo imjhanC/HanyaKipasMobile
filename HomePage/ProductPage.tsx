@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   productDesc: {
     fontSize: 16,
     color: 'black',
-    marginBottom: 8,
+    marginBottom: 16,
   },
   priceQtyContainer: {
     flexDirection: 'row',
@@ -167,9 +167,10 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   recommendationsTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 8,
+    marginBottom: 10,
+    color: 'red',
   },
   recommendationBox: {
     width: 150,
@@ -179,7 +180,7 @@ const styles = StyleSheet.create({
   recommendationImg: {
     width: '100%',
     height: 100,
-    resizeMode: 'cover',
+    resizeMode: 'contain',
     borderRadius: 10,
   },
   recommendationName: {
