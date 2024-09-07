@@ -2,9 +2,11 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import sqlite3
 import base64
+from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
 CORS(app)
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 def get_db_connection():  #For accessing user database 
     conn = sqlite3.connect('users.db')
@@ -172,6 +174,57 @@ def get_cart_items(user_id):
         })
 
     return jsonify({"cart_items": cart_items_list})
+
+@app.route('/recommendations/<string:current_product_name>', methods=['GET'])
+def get_recommendations(current_product_name):
+    conn = get_db_connection_1('products.db')
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT * FROM products WHERE product_name != ?', (current_product_name,))
+    products = cursor.fetchall()
+
+    conn.close()
+
+    recommendations = []
+    for product in products:
+        # Convert BLOB to base64 encoded string
+        product_img_base64 = base64.b64encode(product["product_img"]).decode('utf-8') if product["product_img"] else None
+
+        recommendations.append({
+            "product_name": product["product_name"],
+            "product_price": product["product_price"],
+            "product_img": product_img_base64  # Base64 encoded string
+        })
+
+    return jsonify({"recommendations": recommendations})
+
+@socketio.on('get_recommendations')
+def handle_get_recommendations(data):
+    current_product_name = data.get('current_product_name')
+    
+    conn = get_db_connection_1('products.db')
+    cursor = conn.cursor()
+    
+    cursor.execute('SELECT * FROM products WHERE product_name != ?', (current_product_name,))
+    products = cursor.fetchall()
+
+    conn.close()
+
+    recommendations = []
+    for product in products:
+        # Convert BLOB to base64 encoded string
+        product_img_base64 = base64.b64encode(product["product_img"]).decode('utf-8') if product["product_img"] else None
+
+        recommendations.append({
+            "product_name": product["product_name"],
+            "product_price": product["product_price"],
+            "product_img": product_img_base64,  # Base64 encoded string
+            "product_qty" : product["product_qty"],
+            "product_desc" : product["product_desc"],
+            "product_type" : product["product_type"],
+        })
+
+    emit('recommendations', recommendations)
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=3000, debug=True)
