@@ -18,6 +18,7 @@ import SearchPage from "./HomePage/SearchPage.tsx";
 import ProductPage from "./HomePage/ProductPage.tsx";
 import LoginPage from "./Login/Login.tsx";
 import RegisterPage from './Login/Register.tsx';
+import ShoppingCart from './HomePage/ShoppingCart.tsx';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -44,6 +45,7 @@ const Home = (route : any) => {
         <stack.Screen name="OrderPage" component={OrderPage} />
         <stack.Screen name="ProductPage" component={ProductPage} />
         <stack.Screen name="Login" component={LoginPage} />
+        <stack.Screen name="ShoppingCart" component={ShoppingCart} />
       </stack.Navigator>
   );
 }

@@ -116,6 +116,7 @@ const ShoppingCart = () => {
 
     return (
         <SafeAreaView style={styles.container}>
+            <Text> Hello</Text>
             <FlatList
                 data={cartItems}
                 renderItem={renderItem}
