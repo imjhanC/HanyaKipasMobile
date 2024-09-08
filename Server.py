@@ -233,5 +233,53 @@ def add_to_cart():
     conn.close()
     return jsonify({"message": "Item added to cart successfully"}), 201
 
+@app.route('/cart/<string:username>', methods=['GET'])
+def get_cart_items(username):
+    conn = get_db_connection_cart('cart.db')
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT * FROM carts WHERE cusname = ?', (username,))
+    cart_items = cursor.fetchall()
+
+    conn.close()
+
+    cart_list = []
+    for item in cart_items:
+        cart_list.append({
+            "id": item["id"],
+            "productname": item["productname"],
+            "cartqty": item["cartqty"],
+            "totalprice": item["totalprice"],
+            "producttype": item["producttype"]
+        })
+
+    return jsonify({"cartItems": cart_list})
+
+@app.route('/products', methods=['GET'])
+def get_product_by_name():
+    product_name = request.args.get('name')
+
+    conn = get_db_connection_1('products.db')
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT * FROM products WHERE product_name = ?', (product_name,))
+    product = cursor.fetchone()
+
+    conn.close()
+
+    if product:
+        product_img_base64 = base64.b64encode(product["product_img"]).decode('utf-8') if product["product_img"] else None
+        return jsonify({
+            "product_name": product["product_name"],
+            "product_qty": product["product_qty"],
+            "product_desc": product["product_desc"],
+            "product_img": product_img_base64,
+            "product_price": product["product_price"],
+            "product_type": product["product_type"]
+        }), 200
+    else:
+        return jsonify({"error": "Product not found"}), 404
+
+
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=3000, debug=True)
