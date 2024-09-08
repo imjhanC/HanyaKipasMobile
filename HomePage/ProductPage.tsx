@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet, Dimensions, TouchableNativeFeedback, Scr
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AnimatedButton from './AnimatedButton'; // Import the AnimatedButton component
 import io from 'socket.io-client';
+import axios from 'axios';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -11,6 +12,7 @@ const socket = io('http://127.0.0.1:3000'); // Adjust the URL if needed
 const ProductPage = ({ route, navigation }: any) => {
   const [recommendations, setRecommendations] = useState([]);
   const [quantity, setQuantity] = useState(1); // Start with quantity of 1
+  const [cusname, setCusname] = useState(''); // Placeholder for customer name
 
   const { 
     product_name, product_qty, product_desc,
@@ -18,6 +20,23 @@ const ProductPage = ({ route, navigation }: any) => {
   } = route.params;
 
   useEffect(() => {
+    // Fetch customer name
+    const fetchUserName = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:3000/current_user');
+        if (response.status === 200) {
+          setCusname(response.data.username);
+          console.log(response.data.username);
+        } else {
+          console.error('Failed to fetch user name');
+        }
+      } catch (error) {
+        console.error('Error fetching user name:', error);
+      }
+    };
+
+    fetchUserName();
+
     // Request recommendations
     socket.emit('get_recommendations', { current_product_name: product_name });
 
@@ -34,10 +53,20 @@ const ProductPage = ({ route, navigation }: any) => {
     return { uri: `data:image/jpeg;base64,${imgBase64}` };
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (quantity > 0) {
-      console.log('Added to cart!', quantity);
-      // Handle the add to cart action, such as updating the cart
+      try {
+        await axios.post('http://127.0.0.1:3000/add_to_cart', {
+          cusname,
+          productname: product_name,
+          cartqty: quantity,
+          totalprice: quantity * product_price,
+          producttype: product_type
+        });
+        console.log('Added to cart!', quantity);
+      } catch (error) {
+        console.error('Error adding to cart:', error);
+      }
     }
   };
 

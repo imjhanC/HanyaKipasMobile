@@ -199,5 +199,39 @@ def get_cart_count():
 
     return jsonify({"count": count})
 
+@app.route('/current_user', methods=['GET'])
+def get_current_user():
+    # Fetch the username from the session
+    username = session.get('username')
+
+    if username:
+        return jsonify({"username": username}), 200
+    else:
+        return jsonify({"error": "No user logged in"}), 401
+    
+
+@app.route('/add_to_cart', methods=['POST'])
+def add_to_cart():
+    data = request.json
+    cusname = data.get('cusname')
+    productname = data.get('productname')
+    cartqty = data.get('cartqty')
+    totalprice = data.get('totalprice')
+    producttype = data.get('producttype')
+
+    conn = get_db_connection_cart('cart.db')
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute('INSERT INTO carts (cusname, productname, cartqty, totalprice, producttype) VALUES (?, ?, ?, ?, ?)', 
+                       (cusname, productname, cartqty, totalprice, producttype))
+        conn.commit()
+    except sqlite3.IntegrityError as e:
+        conn.close()
+        return jsonify({"error": str(e)}), 400
+
+    conn.close()
+    return jsonify({"message": "Item added to cart successfully"}), 201
+
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=3000, debug=True)
