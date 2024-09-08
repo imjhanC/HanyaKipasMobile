@@ -189,15 +189,22 @@ def handle_get_recommendations(data):
 
 @app.route('/cart/count', methods=['GET'])
 def get_cart_count():
+    # Fetch the username from the session
+    username = session.get('username')
+
+    if not username:
+        return jsonify({"error": "No user logged in"}), 401
+
     conn = get_db_connection_cart('cart.db')
     cursor = conn.cursor()
 
-    cursor.execute('SELECT COUNT(*) as count FROM carts')
+    cursor.execute('SELECT COUNT(*) as count FROM carts WHERE cusname = ?', (username,))
     count = cursor.fetchone()['count']
 
     conn.close()
 
     return jsonify({"count": count})
+
 
 @app.route('/current_user', methods=['GET'])
 def get_current_user():
