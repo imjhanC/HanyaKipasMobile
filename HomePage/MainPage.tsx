@@ -16,6 +16,7 @@ import ProfilePage from "./ProfilePage.tsx";
 import SearchPage from "./SearchPage.tsx";
 import ProductPage from "./ProductPage.tsx";
 import Login from "../Login/Login.tsx";
+import ShoppingCart from  "./ShoppingCart.tsx";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -35,6 +36,7 @@ const Home = (route : any) => {
       <stack.Screen name="ProfilePage" component={ProfilePage} />
       <stack.Screen name="SearchPage" component={SearchPage} />
       <stack.Screen name="ProductPage" component={ProductPage} />
+      <stack.Screen name="ShoppingCart" component={ShoppingCart} />
       <stack.Screen name='Login' component={Login} />
     </stack.Navigator>
   );
