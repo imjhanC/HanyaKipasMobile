@@ -19,7 +19,7 @@ def get_db_connection_1(db_name='products.db'):
     conn.row_factory = sqlite3.Row  # Allows you to access columns by name
     return conn
 
-def get_db_connection_cartItem(db_name='cartItem.db'):
+def get_db_connection_cart(db_name='cart.db'):
     conn = sqlite3.connect(db_name)
     conn.row_factory = sqlite3.Row  # Allows you to access columns by name
     return conn

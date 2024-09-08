@@ -77,14 +77,16 @@ CREATE TABLE order (
     orderitem_totalprice DOUBLE NOT NULL
 );
 
-sqlite3 cartItem.db
-CREATE TABLE cart_items (
+sqlite3 cart.db
+CREATE TABLE carts(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    product_id INTEGER NOT NULL,
-    quantity INTEGER NOT NULL,
-    FOREIGN KEY(user_id) REFERENCES users(id),
-    FOREIGN KEY(product_id) REFERENCES products(id)
+    cusname INTEGER NOT NULL,
+    productname TEXT NOT NULL,
+    cartqty INTEGER NOT NULL,
+    totalprice INTEGER NOT NULL,
+    producttype TEXT NOT NULL,
+    FOREIGN KEY(cusname) REFERENCES users(username),
+    FOREIGN KEY(productname) REFERENCES products(product_name),
+    FOREIGN KEY(producttype) REFERENCES products(product_type)
 );
 
-INSERT INTO cart_items (user_id, product_id, quantity) VALUES (1, 101, 3);
