@@ -24,10 +24,17 @@ import { createStackNavigator } from '@react-navigation/stack';
 const btmNav = createBottomTabNavigator();
 const stack = createStackNavigator();
 
-const Home = () => {
+const Home = (route : any) => {
+
+  const [initialPage, setInitialPage] = useState('Login')
+
+  useEffect(() => {
+    setInitialPage(route?.params?.loginCheck === 1 ? 'HomePage' : 'Login')
+  })
+
   return(
       <stack.Navigator
-        initialRouteName='HomePage'
+        initialRouteName={initialPage}
         screenOptions={{
           headerShown: false
         }}
@@ -36,6 +43,7 @@ const Home = () => {
         <stack.Screen name="SearchPage" component={SearchPage} />
         <stack.Screen name="OrderPage" component={OrderPage} />
         <stack.Screen name="ProductPage" component={ProductPage} />
+        <stack.Screen name="Login" component={LoginPage} />
       </stack.Navigator>
   );
 }
