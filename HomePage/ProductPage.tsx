@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, TouchableNativeFeedback, ScrollView, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, Dimensions, TouchableNativeFeedback, ScrollView, FlatList, TouchableOpacity } from 'react-native';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AnimatedButton from './AnimatedButton'; // Import the AnimatedButton component
 import io from 'socket.io-client';
+
+const windowHeight = Dimensions.get('window').height;
 
 const socket = io('http://127.0.0.1:3000'); // Adjust the URL if needed
 

@@ -23,10 +23,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 const btmNav = createBottomTabNavigator();
 const stack = createStackNavigator(); 
 
-const Home = (route : any) => {
+const Home = () => {
   return(
     <stack.Navigator
-      initialRouteName={route?.params?.loginCheck === 1 ? 'HomePage' : 'Login'}
+      initialRouteName='Login'
       screenOptions={{
         headerShown: false
       }}

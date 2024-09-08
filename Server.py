@@ -3,6 +3,7 @@ from flask_cors import CORS
 import sqlite3
 import base64
 from flask_socketio import SocketIO, emit
+import random
 
 app = Flask(__name__)
 CORS(app)
@@ -94,6 +95,34 @@ def get_products():
         # Convert BLOB to base64 encoded string
         product_img_base64 = base64.b64encode(product["product_img"]).decode('utf-8') if product["product_img"] else None
         
+        products_list.append({
+            "id": product["id"],
+            "product_name": product["product_name"],
+            "product_qty": product["product_qty"],
+            "product_desc": product["product_desc"],
+            "product_img": product_img_base64,  # Base64 encoded string
+            "product_price": product["product_price"],
+            "product_type": product["product_type"]
+        })
+
+    return jsonify({"products": products_list})
+
+# To get Random products for search page
+@app.route('/products/random', methods=['GET'])
+def get_random_products():
+    conn = get_db_connection_1('products.db')
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT * FROM products ORDER BY RANDOM() LIMIT 5;')
+    products = cursor.fetchall()
+
+    conn.close()
+
+    products_list = []
+    for product in products:
+        # Convert BLOB to base64 encoded string
+        product_img_base64 = base64.b64encode(product["product_img"]).decode('utf-8') if product["product_img"] else None
+
         products_list.append({
             "id": product["id"],
             "product_name": product["product_name"],

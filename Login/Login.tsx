@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { View, TextInput, Text, TouchableOpacity, Dimensions, Alert, StyleSheet, Image, Animated, TouchableWithoutFeedback } from 'react-native';
 import axios from 'axios';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { NavigationHelpersContext } from '@react-navigation/native';
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
@@ -32,6 +33,7 @@ const LoginScreen = ({navigation}:any) => {
       if (response.status === 200) {
         Alert.alert("Success", "Login successful!");
         // Navigate to the next screen or perform other actions on successful login
+        navigation.navigate('HomePage', {loginCheck : 1})
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -96,7 +98,6 @@ const LoginScreen = ({navigation}:any) => {
       <TouchableWithoutFeedback
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
-        onPress = {() => navigation.navigate('HomePage', {loginCheck: 1})}
         disabled={loading}
       >
         <Animated.View style={[styles.button, { transform: [{ scale: scaleAnim }] }]}>
