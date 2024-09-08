@@ -90,3 +90,8 @@ CREATE TABLE carts(
     FOREIGN KEY(producttype) REFERENCES products(product_type)
 );
 
+INSERT INTO carts (cusname, productname, cartqty, totalprice, producttype)
+VALUES
+('john_doe', 'Bladeless Fan', 2, 300, 'Bladeless Fan'),
+('jane_smith', 'Ceiling Fan', 1, 150, 'Ceiling Fan'),
+('alice_johnson', 'Table Fan', 3, 90, 'Table Fan');

@@ -187,5 +187,18 @@ def handle_get_recommendations(data):
 
     emit('recommendations', recommendations)
 
+# Route to get the count of items in the cart
+@app.route('/cart/count', methods=['GET'])
+def get_cart_count():
+    conn = get_db_connection_cart('cart.db')
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT COUNT(*) as count FROM carts')
+    count = cursor.fetchone()['count']
+
+    conn.close()
+
+    return jsonify({"count": count})
+
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=3000, debug=True)
