@@ -85,7 +85,6 @@ CREATE TABLE carts(
     cartqty INTEGER NOT NULL,
     totalprice INTEGER NOT NULL,
     producttype TEXT NOT NULL,
-    product_img BLOB NOT NULL,
     FOREIGN KEY(cusname) REFERENCES users(username),
     FOREIGN KEY(productname) REFERENCES products(product_name),
     FOREIGN KEY(producttype) REFERENCES products(product_type)
