@@ -40,6 +40,7 @@ const App = ({ navigation }: any) =>{
         require('./ProfileImages/fan2.png'),
         require('./ProfileImages/fan9.jpeg'),
         require('./ProfileImages/fan10.png'),
+        require('./ProfileImages/fan11.png'),
       ]
       let currentIndex = 0;
 
