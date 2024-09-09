@@ -65,6 +65,38 @@ def login():
     session['username'] = username
     return jsonify({"message": "Login successful"}), 200
 
+@app.route('/change-password', methods=['POST'])
+def changePassword():
+    username = session.get('username')
+    oldPassword = request.json['oldPassword']
+
+    if not username:
+        return jsonify({"error": "No user logged in"}), 401
+    
+    conn = get_db_connection_cart('users.db')
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT * FROM users WHERE username = ? AND password = ?', (username, oldPassword))
+    user = cursor.fetchone()
+
+    conn.close()
+
+    if user is None:
+        return jsonify({"error": "Invalid username or password"}), 401
+    elif oldPassword is not user['password']:
+        return jsonify({"error": "Invalid password"}), 403
+    else:
+        newPassword = request.json['newPassword']
+        conn = get_db_connection_cart('users.db')
+        cursor = conn.cursor()
+
+        cursor.execute('UPDATE users.db SET password = ? WHERE username = ? ', (newPassword, username))
+        conn.commit()
+
+        conn.close()
+
+        return jsonify({"message": "Password Changed Succesfully"}), 201
+
 @app.route('/logout', methods=['POST'])
 def logout():
     session.pop('username', None)  # Remove the username from the session

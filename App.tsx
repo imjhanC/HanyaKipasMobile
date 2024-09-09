@@ -19,6 +19,7 @@ import ProductPage from "./HomePage/ProductPage.tsx";
 import LoginPage from "./Login/Login.tsx";
 import RegisterPage from './Login/Register.tsx';
 import ShoppingCart from './HomePage/ShoppingCart.tsx';
+import UpdatePasswordPage from "./Login/UpdatePassword.tsx";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -35,6 +36,7 @@ const Profile = () => {
         <stack.Screen name="ProfilePage" component={ProfilePage} />
         <stack.Screen name="RegisterPage" component={RegisterPage} />
         <stack.Screen name="Login" component={LoginPage} />
+        <stack.Screen name="UpdatePassword" component={UpdatePasswordPage} />
       </stack.Navigator>
   );
 }
@@ -97,11 +99,11 @@ const HomeBtmNav = () => {
 
 const App = ({route, navigation}: any) => {
 
-  const [initialPage, setInitialPage] = useState('HomePage')
+  const [initialPage, setInitialPage] = useState('Login')
   
-  // useEffect(() => {
-  //   setInitialPage(route?.params?.loginCheck === 1 ? 'HomePage' : 'Login')
-  // })
+  useEffect(() => {
+    setInitialPage(route?.params?.loginCheck === 1 ? 'HomePage' : 'Login')
+  })
 
     return (
       <SafeAreaView style={{flex:1}}>
