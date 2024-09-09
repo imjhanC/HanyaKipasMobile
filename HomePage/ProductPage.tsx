@@ -226,6 +226,7 @@ const styles = StyleSheet.create({
   },
   recommendationsContainer: {
     marginTop: 16,
+    marginBottom: 20,
   },
   recommendationsTitle: {
     fontSize: 20,

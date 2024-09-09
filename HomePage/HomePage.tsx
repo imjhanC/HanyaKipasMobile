@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
-
+import io from 'socket.io-client';  // Import socket.io-client
 const windowHeight = Dimensions.get('window').height;
 
 const HomePage = ({ route, navigation }: any) => {
@@ -48,6 +48,7 @@ const HomePage = ({ route, navigation }: any) => {
       .catch((error) => {
         console.error('Error fetching cart count:', error);
       });
+      
   }, []);
 
   useEffect(() => {
@@ -276,6 +277,7 @@ const styles = StyleSheet.create({
     paddingLeft: 7,
     fontSize: 25,
     fontWeight: '900',
+    textAlign: 'center',
     color: 'black',
   },
   productPrice: {
@@ -290,6 +292,7 @@ const styles = StyleSheet.create({
   productType: {
     fontSize: 16,
     paddingLeft: 7,
+    textAlign: 'center',
     fontWeight: '500',
     color: '#4b4b4b',
   },

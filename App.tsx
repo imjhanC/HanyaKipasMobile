@@ -121,6 +121,7 @@ const App = ({route, navigation}: any) => {
             <stack.Screen name="Login" component={LoginPage} />
             <stack.Screen name="ShoppingCart" component={ShoppingCart} />
             <stack.Screen name="Profile" component={Profile} />
+            <stack.Screen name="UpdatePassword" component={UpdatePasswordPage} />
           </stack.Navigator>
         </NavigationContainer>
       </SafeAreaView>
