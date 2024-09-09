@@ -25,31 +25,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 const btmNav = createBottomTabNavigator();
 const stack = createStackNavigator();
 
-const Home = (route : any) => {
-
-  const [initialPage, setInitialPage] = useState('Login')
-
-  useEffect(() => {
-    setInitialPage(route?.params?.loginCheck === 1 ? 'HomePage' : 'Login')
-  })
-
-  return(
-      <stack.Navigator
-        initialRouteName={initialPage}
-        screenOptions={{
-          headerShown: false
-        }}
-      >
-        <stack.Screen name="HomePage" component={HomePage} />
-        <stack.Screen name="SearchPage" component={SearchPage} />
-        <stack.Screen name="OrderPage" component={OrderPage} />
-        <stack.Screen name="ProductPage" component={ProductPage} />
-        <stack.Screen name="Login" component={LoginPage} />
-        <stack.Screen name="ShoppingCart" component={ShoppingCart} />
-      </stack.Navigator>
-  );
-}
-
 const Profile = () => {
   return(
       <stack.Navigator
@@ -64,62 +39,86 @@ const Profile = () => {
   );
 }
 
+const HomeBtmNav = () => {
+
+  const windowHeight = Dimensions.get('window').height;
+  return(
+    <btmNav.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle:{
+          height: windowHeight * .07,
+        },
+        tabBarActiveTintColor: 'red',
+      }}
+    >
+      <btmNav.Screen 
+        name="Home" 
+        component={HomePage}
+        options={{
+          tabBarIcon: ({focused}) => 
+            <MaterialCommunityIcons 
+              name = {focused ? "home" : "home-outline"}
+              size = {35}
+              color = {focused ? "#0086ff" : "#676767"} // Updated color to #0086ff
+            />
+        }}   
+      />
+
+      <btmNav.Screen 
+        name="Order" 
+        component={OrderPage}
+        options={{
+          tabBarIcon: ({focused}) => 
+            <MaterialCommunityIcons 
+              name = {focused ? "script-text" : "script-text-outline"}
+              size = {35}
+              color = {focused ? "#0086ff" : "#676767"} // Updated color to #0086ff
+            />
+        }} 
+      />
+
+      <btmNav.Screen 
+        name="Profile" 
+        component={Profile}
+        options={{
+          tabBarIcon: ({focused}) => 
+            <MaterialCommunityIcons 
+              name = {focused ? "account-settings" : "account-settings-outline"}
+              size = {35}
+              color = {focused ? "#0086ff" : "#676767"} // Updated color to #0086ff
+            />
+        }} 
+      />
+
+    </btmNav.Navigator>
+  )
+}
+
 const App = ({route, navigation}: any) => {
 
-    const windowHeight = Dimensions.get('window').height;
+  const [initialPage, setInitialPage] = useState('Login')
+
+  useEffect(() => {
+    setInitialPage(route?.params?.loginCheck === 1 ? 'HomePage' : 'Login')
+  })
 
     return (
       <SafeAreaView style={{flex:1}}>
         <NavigationContainer>
-          <btmNav.Navigator
+          <stack.Navigator
+            initialRouteName={initialPage}
             screenOptions={{
-              headerShown: false,
-              tabBarStyle:{
-                height: windowHeight * .07,
-              },
-              tabBarActiveTintColor: 'red',
+              headerShown: false
             }}
           >
-            <btmNav.Screen 
-              name="Home" 
-              component={Home}
-              options={{
-                tabBarIcon: ({focused}) => 
-                  <MaterialCommunityIcons 
-                    name = {focused ? "home" : "home-outline"}
-                    size = {35}
-                    color = {focused ? "#0086ff" : "#676767"} // Updated color to #0086ff
-                  />
-              }}   
-            />
-
-            <btmNav.Screen 
-              name="Order" 
-              component={OrderPage}
-              options={{
-                tabBarIcon: ({focused}) => 
-                  <MaterialCommunityIcons 
-                    name = {focused ? "script-text" : "script-text-outline"}
-                    size = {35}
-                    color = {focused ? "#0086ff" : "#676767"} // Updated color to #0086ff
-                  />
-              }} 
-            />
-
-            <btmNav.Screen 
-              name="Profile" 
-              component={Profile}
-              options={{
-                tabBarIcon: ({focused}) => 
-                  <MaterialCommunityIcons 
-                    name = {focused ? "account-settings" : "account-settings-outline"}
-                    size = {35}
-                    color = {focused ? "#0086ff" : "#676767"} // Updated color to #0086ff
-                  />
-              }} 
-            />
-
-          </btmNav.Navigator>
+            <stack.Screen name="HomePage" component={HomeBtmNav} />
+            <stack.Screen name="SearchPage" component={SearchPage} />
+            <stack.Screen name="OrderPage" component={OrderPage} />
+            <stack.Screen name="ProductPage" component={ProductPage} />
+            <stack.Screen name="Login" component={LoginPage} />
+            <stack.Screen name="ShoppingCart" component={ShoppingCart} />
+          </stack.Navigator>
         </NavigationContainer>
       </SafeAreaView>
     );
