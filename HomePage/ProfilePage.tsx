@@ -19,7 +19,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 const Stack = createStackNavigator();
 const windowWidth = Dimensions.get('window').width;
 
-const App = ({ navigation }: { navigation: any }) =>{
+const App = ({ navigation }: any) =>{
 
     const [currentUser, setCurrentUser] = useState('');
 
@@ -57,14 +57,14 @@ const App = ({ navigation }: { navigation: any }) =>{
           <Text style={styles.name}>{currentUser}</Text>
           <View style={styles.bodyContainer}>
             <TouchableNativeFeedback onPress={() => {
-              navigation.navigate('HomePage', {screen: 'OrderPage'});
+              navigation.navigate('HomePage', {screen: 'Order'});
             }}>
               <View style={styles.individualBodyContainer}>
                 <Text style={styles.individualBodyText}>My Orders</Text>
               </View>
             </TouchableNativeFeedback>
             <TouchableNativeFeedback onPress={() => {
-              navigation.navigate('Profile', {screen: 'UpdatePassword'});
+              navigation.navigate('UpdatePassword');
             }}>
               <View style={styles.individualBodyContainer}>
                 <Text style={styles.individualBodyText}>Update Password</Text>

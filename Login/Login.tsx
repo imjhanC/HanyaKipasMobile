@@ -38,6 +38,7 @@ const LoginScreen = ({navigation}:any) => {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         Alert.alert("Error", "Invalid username or password.");
+        console.log(error)
       } else {
         console.error(error);
         Alert.alert("Error", "Something went wrong. Please try again later.");

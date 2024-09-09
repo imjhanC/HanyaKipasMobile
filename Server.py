@@ -73,7 +73,7 @@ def changePassword():
     if not username:
         return jsonify({"error": "No user logged in"}), 401
     
-    conn = get_db_connection_cart('users.db')
+    conn = get_db_connection()
     cursor = conn.cursor()
 
     cursor.execute('SELECT * FROM users WHERE username = ? AND password = ?', (username, oldPassword))
@@ -90,7 +90,7 @@ def changePassword():
         conn = get_db_connection_cart('users.db')
         cursor = conn.cursor()
 
-        cursor.execute('UPDATE users.db SET password = ? WHERE username = ? ', (newPassword, username))
+        cursor.execute('UPDATE users SET password = ? WHERE username = ? ', (newPassword, username))
         conn.commit()
 
         conn.close()
