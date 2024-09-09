@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Button, FlatList, ScrollView, Image, Alert } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, TextInput, Button, FlatList, Image, Alert } from 'react-native';
 import SQLite from 'react-native-sqlite-storage';
+import io from 'socket.io-client';
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
+const socket = io('http://127.0.0.1:3000');
 
 const PaymentPage = ({ route, navigation }: any) => {
-    const { cartItems, totalPrice } = route.params;
-
+    const { checkoutData } = route.params;
+    const [totalPrice, setTotalPrice] = useState(0);
     const [shippingName, setShippingName] = useState('');
     const [address, setAddress] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -12,7 +16,14 @@ const PaymentPage = ({ route, navigation }: any) => {
     const [expirationDate, setExpirationDate] = useState('');
     const [cvv, setCvv] = useState('');
 
-    const db = SQLite.openDatabase({ name: 'order.db', location: 'default' });
+    useEffect(() => {
+        calculateTotalPrice(checkoutData);
+    }, [checkoutData]);
+
+    const calculateTotalPrice = (items: any[]) => {
+        const total = items.reduce((sum, item) => sum + item.totalPrice, 0);
+        setTotalPrice(total);
+    };
 
     const handlePayment = () => {
         if (!shippingName || !address || !phoneNumber || !creditCardNumber || !expirationDate || !cvv) {
@@ -20,83 +31,100 @@ const PaymentPage = ({ route, navigation }: any) => {
             return;
         }
 
-        
+        console.log('Processing payment...');
+        console.log('Shipping Name:', shippingName);
+        console.log('Address:', address);
+        console.log('Phone Number:', phoneNumber);
+        console.log('Credit Card Number:', creditCardNumber);
+        console.log('Expiration Date:', expirationDate);
+        console.log('CVV:', cvv);
+
+        Alert.alert('Purchase Successful', 'Thank you for your purchase!', [
+            { text: 'OK', onPress: () => navigation.navigate('HomePage') }
+        ]);
     };
 
     return (
-        <ScrollView style={styles.container}>
+        <View style={styles.container}>
             <Text style={styles.headerText}>Payment Page</Text>
 
-            <Text style={styles.sectionTitle}>Items</Text>
             <FlatList
-                data={cartItems}
-                keyExtractor={(item) => item.id.toString()}
+                data={checkoutData}
+                ListHeaderComponent={
+                    <>
+                        <Text style={styles.sectionTitle}>Items</Text>
+                    </>
+                }
+                keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item }) => (
                     <View style={styles.cartItemBox}>
-                        {item.product_img && (
+                        {item.productImage && (
                             <Image
-                                source={{ uri: `data:image/png;base64,${item.product_img}` }} 
+                                source={{ uri: `data:image/png;base64,${item.productImage}` }} 
                                 style={styles.productImage}
                             />
                         )}
                         <View style={styles.itemDetails}>
-                            <Text style={styles.cartItemText}>{item.productname}</Text>
-                            <Text style={styles.cartItemText}>Price: ${item.totalprice}</Text>
-                            <Text style={styles.cartItemText}>Quantity: {item.cartqty}</Text>
+                            <Text style={styles.cartItemText}>{item.productName}</Text>
+                            <Text style={styles.cartItemText}>Price: ${item.totalPrice}</Text>
+                            <Text style={styles.cartItemText}>Quantity: {item.cartQty}</Text>
                         </View>
                     </View>
                 )}
-            />
+                ListFooterComponent={
+                    <>
+                        <Text style={styles.totalPrice}>Total Price: ${totalPrice}</Text>
 
-            <Text style={styles.totalPrice}>Total Price: ${totalPrice}</Text>
+                        <Text style={styles.sectionTitle}>Shipping Information</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Full Name"
+                            value={shippingName}
+                            onChangeText={setShippingName}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Address"
+                            value={address}
+                            onChangeText={setAddress}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Phone Number"
+                            keyboardType="phone-pad"
+                            value={phoneNumber}
+                            onChangeText={setPhoneNumber}
+                        />
 
-            <Text style={styles.sectionTitle}>Shipping Information</Text>
-            <TextInput
-                style={styles.input}
-                placeholder="Full Name"
-                value={shippingName}
-                onChangeText={setShippingName}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Address"
-                value={address}
-                onChangeText={setAddress}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Phone Number"
-                keyboardType="phone-pad"
-                value={phoneNumber}
-                onChangeText={setPhoneNumber}
-            />
+                        <Text style={styles.sectionTitle}>Payment Information</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Credit Card Number"
+                            keyboardType="numeric"
+                            value={creditCardNumber}
+                            onChangeText={setCreditCardNumber}
+                        />
+                        <View style={styles.row}>
+                            <TextInput
+                                style={[styles.input, styles.halfInput]}
+                                placeholder="MM/YY"
+                                value={expirationDate}
+                                onChangeText={setExpirationDate}
+                            />
+                            <TextInput
+                                style={[styles.input, styles.halfInput]}
+                                placeholder="CVV"
+                                keyboardType="numeric"
+                                value={cvv}
+                                onChangeText={setCvv}
+                            />
+                        </View>
 
-            <Text style={styles.sectionTitle}>Payment Information</Text>
-            <TextInput
-                style={styles.input}
-                placeholder="Credit Card Number"
-                keyboardType="numeric"
-                value={creditCardNumber}
-                onChangeText={setCreditCardNumber}
+                        <Button title="Pay Now" onPress={handlePayment} />
+                    </>
+                }
             />
-            <View style={styles.row}>
-                <TextInput
-                    style={[styles.input, styles.halfInput]}
-                    placeholder="MM/YY"
-                    value={expirationDate}
-                    onChangeText={setExpirationDate}
-                />
-                <TextInput
-                    style={[styles.input, styles.halfInput]}
-                    placeholder="CVV"
-                    keyboardType="numeric"
-                    value={cvv}
-                    onChangeText={setCvv}
-                />
-            </View>
-
-            <Button title="Pay Now" onPress={handlePayment} />
-        </ScrollView>
+        </View>
     );
 };
 
