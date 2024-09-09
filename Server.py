@@ -339,5 +339,24 @@ def get_product_by_name():
     else:
         return jsonify({"error": "Product not found"}), 404
     
+@app.route('/cart/delete', methods=['DELETE'])
+def delete_cart_item():
+    data = request.json
+    cusname = data.get('username')
+    productname = data.get('productname')
+
+    conn = get_db_connection_cart('cart.db')
+    cursor = conn.cursor()
+
+    cursor.execute('DELETE FROM carts WHERE cusname = ? AND productname = ?', (cusname, productname))
+    conn.commit()
+
+    if cursor.rowcount == 0:
+        conn.close()
+        return jsonify({"error": "Item not found in the cart"}), 404
+
+    conn.close()
+    return jsonify({"message": "Item deleted successfully"}), 200
+
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=3000, debug=True)
