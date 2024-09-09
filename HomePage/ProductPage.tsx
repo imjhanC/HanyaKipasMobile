@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet, Dimensions, TouchableNativeFeedback, Scr
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AnimatedButton from './AnimatedButton'; // Import the AnimatedButton component
 import io from 'socket.io-client';
+import axios from 'axios';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -10,13 +11,32 @@ const socket = io('http://127.0.0.1:3000'); // Adjust the URL if needed
 
 const ProductPage = ({ route, navigation }: any) => {
   const [recommendations, setRecommendations] = useState([]);
-  
+  const [quantity, setQuantity] = useState(1); // Start with quantity of 1
+  const [cusname, setCusname] = useState(''); // Placeholder for customer name
+
   const { 
     product_name, product_qty, product_desc,
     product_img, product_price, product_type 
   } = route.params;
 
   useEffect(() => {
+    // Fetch customer name
+    const fetchUserName = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:3000/current_user');
+        if (response.status === 200) {
+          setCusname(response.data.username);
+          console.log(response.data.username);
+        } else {
+          console.error('Failed to fetch user name');
+        }
+      } catch (error) {
+        console.error('Error fetching user name:', error);
+      }
+    };
+
+    fetchUserName();
+
     // Request recommendations
     socket.emit('get_recommendations', { current_product_name: product_name });
 
@@ -33,13 +53,26 @@ const ProductPage = ({ route, navigation }: any) => {
     return { uri: `data:image/jpeg;base64,${imgBase64}` };
   };
 
-  const handleAddToCart = () => {
-    // Handle the add to cart action here
-    console.log('Added to cart!');
+  const handleAddToCart = async () => {
+    if (quantity > 0) {
+      try {
+        await axios.post('http://127.0.0.1:3000/add_to_cart', {
+          cusname,
+          productname: product_name,
+          cartqty: quantity,
+          totalprice: quantity * product_price,
+          producttype: product_type
+        });
+        console.log('Added to cart!', quantity);
+      } catch (error) {
+        console.error('Error adding to cart:', error);
+      }
+    }
   };
 
   const handleRecommendationPress = (item: any) => {
-    // Navigate to ProductPage with the selected product's details
+    // Reset quantity to 1 and navigate to the selected product page
+    setQuantity(1);
     navigation.navigate('ProductPage', {
       product_name: item.product_name,
       product_qty: item.product_qty,
@@ -63,6 +96,18 @@ const ProductPage = ({ route, navigation }: any) => {
     </TouchableOpacity>
   );
 
+  const incrementQuantity = () => {
+    if (quantity < product_qty) {
+      setQuantity(quantity + 1);
+    }
+  };
+
+  const decrementQuantity = () => {
+    if (quantity > 1) { // Minimum quantity is 1
+      setQuantity(quantity - 1);
+    }
+  };
+
   return (
     <ScrollView style={styles.productPageContainer}>
       <TouchableNativeFeedback onPress={() => navigation.navigate('HomePage')}>
@@ -83,10 +128,24 @@ const ProductPage = ({ route, navigation }: any) => {
         <Text style={styles.productName}>{product_name}</Text>
         <View style={styles.priceQtyContainer}>
           <Text style={styles.productPrice}>Price: RM{product_price}</Text>
-          <Text style={styles.productQty}>Quantity: {product_qty}</Text>
+          <Text style={styles.productQty}>Available Quantity: {product_qty}</Text>
         </View>
         <Text style={styles.productType}>Type: {product_type}</Text>
-        <AnimatedButton onPress={handleAddToCart} />
+
+        {/* Container for quantity selector and add to cart button */}
+        <View style={styles.quantityAndButtonContainer}>
+          <View style={styles.quantitySelectorContainer}>
+            <TouchableOpacity onPress={decrementQuantity} style={styles.quantityButton}>
+              <Text style={styles.quantityText}>-</Text>
+            </TouchableOpacity>
+            <Text style={styles.quantityDisplay}>{quantity}</Text>
+            <TouchableOpacity onPress={incrementQuantity} style={styles.quantityButton}>
+              <Text style={styles.quantityText}>+</Text>
+            </TouchableOpacity>
+          </View>
+          <AnimatedButton onPress={handleAddToCart}/>
+        </View>
+
         <View style={styles.separator} />
         <Text style={styles.productDesc}>Description: {product_desc}</Text>
 
@@ -194,5 +253,37 @@ const styles = StyleSheet.create({
   recommendationPrice: {
     fontSize: 14,
     color: '#60d2f7',
+  },
+  // Styles for Quantity Selector and Add to Cart Button
+  quantityAndButtonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginVertical: 10,
+  },
+  quantitySelectorContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1, // Take up the remaining space
+  },
+  quantityButton: {
+    width: 30,
+    height: 30,
+    borderRadius: 5,
+    backgroundColor: '#60d2f7',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  quantityText: {
+    fontSize: 20,
+    color: 'white',
+  },
+  quantityDisplay: {
+    fontSize: 20,
+    marginHorizontal: 10,
+    color: '#000',
+  },
+  addToCartButton: {
+    width: 120, // Adjust the width as needed
   },
 });

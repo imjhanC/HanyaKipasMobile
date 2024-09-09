@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   },
   button: {
     paddingVertical: 15,
-    paddingHorizontal: 130, // Increased horizontal padding for wider button
+    paddingHorizontal: 80, // Increased horizontal padding for wider button
     borderRadius: 25,
     elevation: 5,
     shadowColor: '#000',
