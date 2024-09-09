@@ -20,6 +20,7 @@ import LoginPage from "./Login/Login.tsx";
 import RegisterPage from './Login/Register.tsx';
 import ShoppingCart from './HomePage/ShoppingCart.tsx';
 import UpdatePasswordPage from "./Login/UpdatePassword.tsx";
+import PaymentPage from './HomePage/PaymentPage.tsx';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { createStackNavigator } from '@react-navigation/stack';
 
