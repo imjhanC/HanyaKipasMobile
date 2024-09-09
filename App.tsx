@@ -62,7 +62,7 @@ const HomeBtmNav = () => {
               size = {35}
               color = {focused ? "#0086ff" : "#676767"} // Updated color to #0086ff
             />
-        }}   
+        }}
       />
 
       <btmNav.Screen 
@@ -114,7 +114,6 @@ const App = ({route, navigation}: any) => {
           >
             <stack.Screen name="HomePage" component={HomeBtmNav} />
             <stack.Screen name="SearchPage" component={SearchPage} />
-            <stack.Screen name="OrderPage" component={OrderPage} />
             <stack.Screen name="ProductPage" component={ProductPage} />
             <stack.Screen name="Login" component={LoginPage} />
             <stack.Screen name="ShoppingCart" component={ShoppingCart} />

@@ -74,12 +74,18 @@ const App = ({router, navigation}: any) =>{
                     value={querySearch}
                     onChangeText={(text) => setQuerySearch(text)}
                     onSubmitEditing={() => navigation.navigate('HomePage', {
-                        search: querySearch
+                        screen: 'Home',
+                        params: {
+                            search: querySearch
+                        }
                     })}
                     placeholder={placeholderText}
                 />
-                <TouchableNativeFeedback onPress={() => navigation.navigate('HomePage', {
-                        search: querySearch
+                <TouchableNativeFeedback onPress={() => navigation.navigate('HomePage', { 
+                        screen: 'Home',
+                        params: {
+                            search: querySearch
+                        }
                     })}
                 >
                     <MaterialCommunityIcons  

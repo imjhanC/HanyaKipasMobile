@@ -92,7 +92,7 @@ const HomePage = ({ route, navigation }: any) => {
         </View>
 
         <View style={styles.headerRightContainer}>
-          <TouchableNativeFeedback onPress={() => navigation.navigate('ShoppingCart' )}>
+          <TouchableNativeFeedback onPress={() => navigation.navigate('ShoppingCart')}>
             <View style={styles.cartContainer}>
               <MaterialCommunityIcons name="cart-outline" style={styles.cartIcon} />
               {cartCount > 0 && (

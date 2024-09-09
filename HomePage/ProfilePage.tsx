@@ -19,23 +19,62 @@ import { createStackNavigator } from '@react-navigation/stack';
 const Stack = createStackNavigator();
 
 const App = ({ navigation }: { navigation: any }) =>{
-    const [text, onChangeText] = React.useState();
+
+    const [currentUser, setCurrentUser] = useState('Tan Kye Wen');
+
+    // useEffect(() => {
+    //   //Fetch current user from Flask server
+    //   fetch('http://127.0.0.1:3000/current_user')
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //       setCurrentUser(data.username);
+    //     })
+    //     .catch((error) => console.error('Error fetching products: ', error));
+    // }, []);
     
-    const user = {
-        name: 'John Doe',
-        email: 'john.doe@example.com',
-        image: 'https://via.placeholder.com/150',
-      };
+    const [profileImage, setProfileImage] = useState(require('./ProfileImages/fan1.png'));
+    useEffect(() => {
+      const profileImageOptions = [require('./ProfileImages/fan1.png'), require('./ProfileImages/fan2.png'), require('./ProfileImages/fan3.png')]
+      let currentIndex = 0;
+
+      const intervalId = setInterval(() => {
+        currentIndex = (currentIndex + 1) % profileImageOptions.length;
+        setProfileImage(profileImageOptions[currentIndex]);
+      }, 30000);
+  
+      return () => clearInterval(intervalId);
+    }, [])
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
-          <View style={styles.profileImageContainer}>
-            <Image source={{ uri: user.image }} style={styles.profileImage} />
+          <View style={styles.header}>
+            <Text style={styles.headerText}>Hanya Kipas.</Text>
           </View>
-          <Text style={styles.name}>{user.name}</Text>
-          <Text style={styles.email}>{user.email}</Text>
-          <Button title="Click Here for Login" onPress={() => navigation.navigate('Login')} />
-          <Text></Text>
+          <View style={styles.profileImageContainer}>
+            <Image source={profileImage} style={styles.profileImage} />
+          </View>
+          <Text style={styles.name}>{currentUser}</Text>
+          <View style={styles.bodyContainer}>
+            <TouchableNativeFeedback onPress={() => {
+              navigation.navigate('HomePage', {screen: 'OrderPage'});
+            }}>
+              <View style={styles.individualBodyContainer}>
+                <Text style={styles.individualBodyText}>My Orders</Text>
+              </View>
+            </TouchableNativeFeedback>
+            <TouchableNativeFeedback onPress={() => {
+              navigation.navigate('UpdatePassword');
+            }}>
+              <View style={styles.individualBodyContainer}>
+                <Text style={styles.individualBodyText}>Update Password</Text>
+              </View>
+            </TouchableNativeFeedback>
+            <TouchableNativeFeedback>
+              <View style={styles.logoutContainer}>
+                <Text style={styles.logoutText}>Logout</Text>
+              </View>
+            </TouchableNativeFeedback>
+          </View>
         </ScrollView>
       );
     };
@@ -49,6 +88,16 @@ const styles = StyleSheet.create({
       padding: 20,
       backgroundColor: '#fff',
     },
+    header: {
+      paddingBottom: 40,
+    },
+    headerText: {
+      color: '#6888ba',
+      fontSize: 25,
+      fontWeight: '900',
+      fontStyle: 'italic',
+      borderBottomWidth: 1,
+    },
     profileImageContainer: {
       marginBottom: 20,
     },
@@ -58,19 +107,28 @@ const styles = StyleSheet.create({
       borderRadius: 75,
     },
     name: {
+      color: 'black',
       fontSize: 24,
       fontWeight: 'bold',
       marginVertical: 10,
     },
-    email: {
-      fontSize: 18,
-      color: '#666',
-      marginBottom: 10,
+    bodyContainer: {
+      alignContent: 'center',
+      paddingHorizontal: 50,
+      paddingTop: 25,
     },
-    bio: {
-      fontSize: 16,
-      textAlign: 'center',
-      marginVertical: 10,
-      paddingHorizontal: 20,
+    individualBodyContainer: {
+      borderRadius: 50,
+      borderColor: '#b0ceff',
+      borderWidth: 1,
+    },
+    individualBodyText: {
+
+    },
+    logoutContainer: {
+
+    },
+    logoutText: {
+
     },
   });
