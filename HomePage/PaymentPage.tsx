@@ -20,39 +20,7 @@ const PaymentPage = ({ route, navigation }: any) => {
             return;
         }
 
-        db.transaction(tx => {
-            // Insert into orders
-            tx.executeSql(
-                'INSERT INTO orders (cusname, cus_addr, cus_phoneno, total_amount, user_id) VALUES (?, ?, ?, ?, ?)',
-                [shippingName, address, phoneNumber, totalPrice, 1], // Assuming user_id is 1 for this example
-                (tx, results) => {
-                    const orderId = results.insertId;
-
-                    // Insert into orderItems
-                    cartItems.forEach(item => {
-                        tx.executeSql(
-                            'INSERT INTO orderItems (order_id, product_name, quantity, price_per_unit, total_price) VALUES (?, ?, ?, ?, ?)',
-                            [orderId, item.productname, item.cartqty, item.totalprice / item.cartqty, item.totalprice],
-                            (tx, results) => {
-                                console.log('Order item inserted successfully');
-                            },
-                            (tx, error) => {
-                                console.error('Error inserting order item: ', error.message);
-                            }
-                        );
-                    });
-
-                    // Alert on success and navigate
-                    Alert.alert('Purchase Successful', 'Thank you for your purchase!', [
-                        { text: 'OK', onPress: () => navigation.navigate('HomePage') }
-                    ]);
-                },
-                (tx, error) => {
-                    console.error('Error inserting order: ', error.message);
-                    Alert.alert('Error', 'Failed to process the order');
-                }
-            );
-        });
+        
     };
 
     return (
