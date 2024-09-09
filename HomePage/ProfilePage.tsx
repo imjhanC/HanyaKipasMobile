@@ -11,6 +11,7 @@ import {
     Button,
     ScrollView,
     Image,
+    Alert,
 } from 'react-native';
 import Login from '../Login/Login.tsx';
 import { NavigationContainer } from '@react-navigation/native';
@@ -18,6 +19,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
 const windowWidth = Dimensions.get('window').width;
+const serverUrl = 'http://127.0.0.1:3000/'
 
 const App = ({ navigation }: any) =>{
 
@@ -25,7 +27,7 @@ const App = ({ navigation }: any) =>{
 
     useEffect(() => {
       //Fetch current user from Flask server
-      fetch('http://127.0.0.1:3000/current_user')
+      fetch(`${serverUrl}current_user`)
         .then((response) => response.json())
         .then((data) => {
           setCurrentUser(data.username);
@@ -45,6 +47,36 @@ const App = ({ navigation }: any) =>{
   
       return () => clearInterval(intervalId);
     }, [])
+
+    const logout = async () => {
+      try {
+        const response = await fetch(`${serverUrl}/logout`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+    
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+    
+        const data = await response.json();
+        console.log(data.message); // Handle the response message
+        Alert.alert(
+          "Successfully Logout!",
+          "See You Next Time!",
+          [
+            {
+              text: "OK",
+              onPress: () => navigation.navigate('Login')
+            }
+          ]
+        )
+      } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+      }
+    };
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
@@ -70,7 +102,9 @@ const App = ({ navigation }: any) =>{
                 <Text style={styles.individualBodyText}>Update Password</Text>
               </View>
             </TouchableNativeFeedback>
-            <TouchableNativeFeedback>
+            <TouchableNativeFeedback onPress={() => {
+              logout();
+            }}>
               <View style={styles.logoutContainer}>
                 <Text style={styles.logoutText}>Logout</Text>
               </View>
