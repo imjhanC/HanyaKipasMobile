@@ -17,20 +17,21 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
+const windowWidth = Dimensions.get('window').width;
 
 const App = ({ navigation }: { navigation: any }) =>{
 
-    const [currentUser, setCurrentUser] = useState('Tan Kye Wen');
+    const [currentUser, setCurrentUser] = useState('');
 
-    // useEffect(() => {
-    //   //Fetch current user from Flask server
-    //   fetch('http://127.0.0.1:3000/current_user')
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //       setCurrentUser(data.username);
-    //     })
-    //     .catch((error) => console.error('Error fetching products: ', error));
-    // }, []);
+    useEffect(() => {
+      //Fetch current user from Flask server
+      fetch('http://127.0.0.1:3000/current_user')
+        .then((response) => response.json())
+        .then((data) => {
+          setCurrentUser(data.username);
+        })
+        .catch((error) => console.error('Error fetching products: ', error));
+    }, []);
     
     const [profileImage, setProfileImage] = useState(require('./ProfileImages/fan1.png'));
     useEffect(() => {
@@ -63,7 +64,7 @@ const App = ({ navigation }: { navigation: any }) =>{
               </View>
             </TouchableNativeFeedback>
             <TouchableNativeFeedback onPress={() => {
-              navigation.navigate('UpdatePassword');
+              navigation.navigate('Profile', {screen: 'UpdatePassword'});
             }}>
               <View style={styles.individualBodyContainer}>
                 <Text style={styles.individualBodyText}>Update Password</Text>
@@ -118,17 +119,33 @@ const styles = StyleSheet.create({
       paddingTop: 25,
     },
     individualBodyContainer: {
-      borderRadius: 50,
-      borderColor: '#b0ceff',
-      borderWidth: 1,
+      height: 70,
+      width: windowWidth * 0.8,
+      borderRadius: 12.5,
+      borderColor: '#ced5e0',
+      borderWidth: 1.5,
+      margin: 5,
+      justifyContent: 'center',
+      paddingLeft: 15,
     },
     individualBodyText: {
-
+      fontSize: 20,
+      fontWeight: '500',
+      color: '#0b3370',
     },
     logoutContainer: {
-
+      height: 70,
+      width: windowWidth * 0.8,
+      borderRadius: 12.5,
+      borderColor: '#ce5540',
+      borderWidth: 2,
+      margin: 5,
+      justifyContent: 'center',
+      paddingLeft: 15,
     },
     logoutText: {
-
+      fontSize: 20,
+      fontWeight: '500',
+      color: '#9b3370',
     },
   });

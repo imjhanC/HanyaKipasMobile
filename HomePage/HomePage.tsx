@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
   individualProductContainer: {
     flex: 0.5,
     flexDirection: 'column',
-    height: 400,
+    height: 475,
     textAlign: 'center',
     margin: 5,
     backgroundColor: 'white',
