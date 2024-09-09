@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
   View,
   StyleSheet,
-  TextInput,
   Text,
   TouchableNativeFeedback,
   FlatList,
@@ -11,9 +10,12 @@ import {
   Image,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useNavigation } from '@react-navigation/native';
-import io from 'socket.io-client';  // Import socket.io-client
+import io from 'socket.io-client';
+
 const windowHeight = Dimensions.get('window').height;
+
+// Replace this with your server URL
+const SOCKET_SERVER_URL = 'http://127.0.0.1:3000';
 
 const HomePage = ({ route, navigation }: any) => {
   const [fanType, setFanType] = useState([
@@ -27,8 +29,13 @@ const HomePage = ({ route, navigation }: any) => {
   const [products, setProducts] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [cartCount, setCartCount] = useState<number>(0);
+  const [socket, setSocket] = useState<any>(null);
 
   useEffect(() => {
+    // Initialize socket connection
+    const socketConnection = io(SOCKET_SERVER_URL);
+    setSocket(socketConnection);
+
     // Fetch product data from Flask server
     fetch('http://127.0.0.1:3000/products')
       .then((response) => response.json())
@@ -48,7 +55,15 @@ const HomePage = ({ route, navigation }: any) => {
       .catch((error) => {
         console.error('Error fetching cart count:', error);
       });
-      
+
+    // Set up socket event listener for cart count updates
+    socketConnection.on('cartCountUpdate', (data: any) => {
+      setCartCount(data.count);
+    });
+
+    return () => {
+      socketConnection.disconnect();
+    };
   }, []);
 
   useEffect(() => {
@@ -248,7 +263,7 @@ const styles = StyleSheet.create({
   individualProductContainer: {
     flex: 0.5,
     flexDirection: 'column',
-    height: 475,
+    height: 445,
     textAlign: 'center',
     margin: 5,
     backgroundColor: 'white',
