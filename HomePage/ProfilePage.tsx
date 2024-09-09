@@ -2,22 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { 
     View, 
     StyleSheet, 
-    TextInput, 
     Text, 
     TouchableNativeFeedback,
-    FlatList,
     Dimensions,
-    SafeAreaView,
-    Button,
     ScrollView,
     Image,
     Alert,
 } from 'react-native';
-import Login from '../Login/Login.tsx';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 
-const Stack = createStackNavigator();
 const windowWidth = Dimensions.get('window').width;
 const serverUrl = 'http://127.0.0.1:3000/'
 
@@ -37,13 +29,23 @@ const App = ({ navigation }: any) =>{
     
     const [profileImage, setProfileImage] = useState(require('./ProfileImages/fan1.png'));
     useEffect(() => {
-      const profileImageOptions = [require('./ProfileImages/fan1.png'), require('./ProfileImages/fan2.png'), require('./ProfileImages/fan3.png')]
+      const profileImageOptions = [
+        require('./ProfileImages/fan1.png'),
+        require('./ProfileImages/fan8.jpeg'),  
+        require('./ProfileImages/fan3.png'),
+        require('./ProfileImages/fan7.jpeg'),
+        require('./ProfileImages/fan4.jpeg'),
+        require('./ProfileImages/fan6.jpeg'),
+        require('./ProfileImages/fan5.jpeg'),
+        require('./ProfileImages/fan2.png'),
+        require('./ProfileImages/fan9.jpeg'),
+      ]
       let currentIndex = 0;
 
       const intervalId = setInterval(() => {
         currentIndex = (currentIndex + 1) % profileImageOptions.length;
         setProfileImage(profileImageOptions[currentIndex]);
-      }, 30000);
+      }, 2000);
   
       return () => clearInterval(intervalId);
     }, [])
