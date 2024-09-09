@@ -80,7 +80,7 @@ const HomeBtmNav = () => {
 
       <btmNav.Screen 
         name="Profile" 
-        component={Profile}
+        component={ProfilePage}
         options={{
           tabBarIcon: ({focused}) => 
             <MaterialCommunityIcons 
@@ -97,11 +97,11 @@ const HomeBtmNav = () => {
 
 const App = ({route, navigation}: any) => {
 
-  const [initialPage, setInitialPage] = useState('Login')
-
-  useEffect(() => {
-    setInitialPage(route?.params?.loginCheck === 1 ? 'HomePage' : 'Login')
-  })
+  const [initialPage, setInitialPage] = useState('HomePage')
+  
+  // useEffect(() => {
+  //   setInitialPage(route?.params?.loginCheck === 1 ? 'HomePage' : 'Login')
+  // })
 
     return (
       <SafeAreaView style={{flex:1}}>
@@ -118,6 +118,7 @@ const App = ({route, navigation}: any) => {
             <stack.Screen name="ProductPage" component={ProductPage} />
             <stack.Screen name="Login" component={LoginPage} />
             <stack.Screen name="ShoppingCart" component={ShoppingCart} />
+            <stack.Screen name="Profile" component={Profile} />
           </stack.Navigator>
         </NavigationContainer>
       </SafeAreaView>
