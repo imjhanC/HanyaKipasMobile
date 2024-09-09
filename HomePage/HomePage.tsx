@@ -132,16 +132,13 @@ const HomePage = ({ route, navigation }: any) => {
           renderItem={({ item }) => (
             <TouchableNativeFeedback
               onPress={() =>
-                navigation.navigate('Home', {
-                  screen: 'ProductPage',
-                  params: {
-                    product_name: item.product_name,
-                    product_qty: item.product_qty,
-                    product_desc: item.product_desc,
-                    product_img: item.product_img,
-                    product_price: item.product_price,
-                    product_type: item.product_type,
-                  },
+                navigation.navigate('ProductPage',{
+                  product_name: item.product_name,
+                  product_qty: item.product_qty,
+                  product_desc: item.product_desc,
+                  product_img: item.product_img,
+                  product_price: item.product_price,
+                  product_type: item.product_type,
                 })
               }
             >
