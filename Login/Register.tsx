@@ -52,6 +52,7 @@ const RegisterPage = ({navigation}:any) => {
           Alert.alert("Error", "Username already exists.");
         } else {
           Alert.alert("Error", "Registration failed. Please try again.");
+          console.log(error)
         }
       } else {
         console.error(error);
