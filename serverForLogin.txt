@@ -79,6 +79,7 @@ CREATE TABLE IF NOT EXISTS orders (
     cus_phoneno TEXT NOT NULL,              
     total_amount DOUBLE NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    username TEXT NOT NULL,
     FOREIGN KEY (product_name) REFERENCES products(product_name),
     FOREIGN KEY (price_per_unit) REFERENCES products(product_price)
 );
