@@ -106,7 +106,7 @@ const LoginScreen = ({navigation}:any) => {
         </Animated.View>
       </TouchableWithoutFeedback>
 
-      <TouchableWithoutFeedback onPress={()=> navigation.navigate('Profile',{screen:'RegisterPage'})}>
+      <TouchableWithoutFeedback onPress={()=> navigation.navigate('Profile', {screen: 'RegisterPage'})}>
         <Text style={styles.registerText}>
           New to HanyaKipas?{" "}
           <Text style={styles.registerLink}>Register an account here</Text>

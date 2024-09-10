@@ -72,7 +72,7 @@ const App = ({ navigation }: any) =>{
           "See You Next Time!",
           [
             {
-              text: "OK",
+              text: "OK", 
               onPress: () => navigation.navigate('Login')
             }
           ]
@@ -100,7 +100,7 @@ const App = ({ navigation }: any) =>{
               </View>
             </TouchableNativeFeedback>
             <TouchableNativeFeedback onPress={() => {
-              navigation.navigate('ProfilePage', {screen: 'UpdatePassword'});
+              navigation.navigate('UpdatePassword');
             }}>
               <View style={styles.individualBodyContainer}>
                 <Text style={styles.individualBodyText}>Update Password</Text>
