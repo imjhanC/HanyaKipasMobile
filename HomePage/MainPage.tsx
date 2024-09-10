@@ -1,11 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { 
-    View, 
-    StyleSheet, 
-    TextInput, 
-    Text, 
-    TouchableNativeFeedback,
-    FlatList,
+    StyleSheet,
     Dimensions,
     SafeAreaView
 } from 'react-native';
@@ -44,7 +39,7 @@ const Home = (route : any) => {
   );
 }
 
-const App = ({route, navigation}: any) => {
+const App = () => {
 
   const windowHeight = Dimensions.get('window').height;
 
