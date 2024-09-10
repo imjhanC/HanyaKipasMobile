@@ -8,6 +8,7 @@ import {
   Dimensions,
   SafeAreaView,
   Image,
+  Alert,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import io from 'socket.io-client';
@@ -77,6 +78,20 @@ const HomePage = ({ route, navigation }: any) => {
     item.product_type.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const emptyFilteredFans = () => {
+    Alert.alert(
+      'No products found',
+      `Sorry, no products match ${searchQuery}.`,
+      [
+        {
+          text: 'OK',
+          onPress: () => navigation.goBack()
+        }
+      ]
+    );
+    
+  }
+
   // For rotating search bar text
   const [placeholderText, setPlaceHolderText] = useState('Search.....');
   useEffect(() => {
@@ -141,7 +156,7 @@ const HomePage = ({ route, navigation }: any) => {
 
       <View style={styles.productContainer}>
         <FlatList
-          data={searchQuery.toLowerCase() === 'all fans' ? products : filteredFans}
+          data={searchQuery.toLowerCase() === 'all fans' ? products : (filteredFans.length === 0 ? )}
           showsVerticalScrollIndicator={false}
           horizontal={false}
           numColumns={2}

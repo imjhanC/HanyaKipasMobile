@@ -7,7 +7,6 @@ import {
     TouchableNativeFeedback,
     FlatList,
     SafeAreaView,
-    Image,
 } from 'react-native';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
