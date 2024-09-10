@@ -69,6 +69,12 @@ const ShoppingCart = ({ navigation }: any) => {
     };
 
     const handleCheckout = () => {
+        if (cartItems.length === 0) {
+            Alert.alert('Error', 'Cart cannot be empty');
+            navigation.navigate('HomePage');
+            return;
+        }
+    
         const checkoutData = cartItems.map(item => ({
             productImage: item.product_img,
             productName: item.productname,

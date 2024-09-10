@@ -47,7 +47,7 @@ const App = ({ navigation }: any) =>{
       const intervalId = setInterval(() => {
         currentIndex = (currentIndex + 1) % profileImageOptions.length;
         setProfileImage(profileImageOptions[currentIndex]);
-      }, 30000);
+      }, 700);
   
       return () => clearInterval(intervalId);
     }, [])
