@@ -27,6 +27,19 @@ def get_db_connection_cart(db_name='cart.db'):
     conn.row_factory = sqlite3.Row
     return conn
 
+# Emit cart count whenever the cart is updated
+def emit_cart_count(username):
+    conn = get_db_connection_cart('cart.db')
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT COUNT(*) as count FROM carts WHERE cusname = ?', (username,))
+    count = cursor.fetchone()['count']
+
+    conn.close()
+
+    # Emit the updated cart count to the client
+    socketio.emit('cart_count', {'username': username, 'count': count})
+
 @app.route('/register', methods=['POST'])
 def register():
     username = request.json['username']
@@ -261,13 +274,35 @@ def add_to_cart():
     conn = get_db_connection_cart('cart.db')
     cursor = conn.cursor()
 
-    try:
-        cursor.execute('INSERT INTO carts (cusname, productname, cartqty, totalprice, producttype) VALUES (?, ?, ?, ?, ?)', 
-                       (cusname, productname, cartqty, totalprice, producttype))
-        conn.commit()
-    except sqlite3.IntegrityError as e:
-        conn.close()
-        return jsonify({"error": str(e)}), 400
+    # Check if the product already exists in the cart for the given user
+    cursor.execute('''
+        SELECT * FROM carts 
+        WHERE cusname = ? AND productname = ? AND producttype = ?
+    ''', (cusname, productname, producttype))
+    
+    existing_item = cursor.fetchone()
+
+    if existing_item:
+        # If exists, update the quantity and total price
+        new_qty = existing_item['cartqty'] + cartqty
+        new_total_price = new_qty * (totalprice / cartqty)  # Recalculate total price
+
+        cursor.execute('''
+            UPDATE carts 
+            SET cartqty = ?, totalprice = ?
+            WHERE cusname = ? AND productname = ? AND producttype = ?
+        ''', (new_qty, new_total_price, cusname, productname, producttype))
+    else:
+        # If not exists, insert a new record
+        cursor.execute('''
+            INSERT INTO carts (cusname, productname, cartqty, totalprice, producttype)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (cusname, productname, cartqty, totalprice, producttype))
+    
+    conn.commit()
+
+    # Emit updated cart count
+    emit_cart_count(cusname)
 
     conn.close()
     return jsonify({"message": "Item added to cart successfully"}), 201
@@ -339,5 +374,26 @@ def get_product_by_name():
     else:
         return jsonify({"error": "Product not found"}), 404
     
+@app.route('/cart/delete', methods=['DELETE'])
+def delete_cart_item():
+    data = request.json
+    cusname = data.get('username')
+    productname = data.get('productname')
+
+    conn = get_db_connection_cart('cart.db')
+    cursor = conn.cursor()
+
+    cursor.execute('DELETE FROM carts WHERE cusname = ? AND productname = ?', (cusname, productname))
+    conn.commit()
+
+    if cursor.rowcount == 0:
+        conn.close()
+        return jsonify({"error": "Item not found in the cart"}), 404
+
+    # Emit updated cart count
+    emit_cart_count(cusname)
+
+    conn.close()
+    return jsonify({"message": "Item deleted successfully"}), 200
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=3000, debug=True)

@@ -47,8 +47,36 @@ const ShoppingCart = ({ navigation }: any) => {
             .catch(error => Alert.alert('Error', error.toString()));
     };
 
-    const updateCartQty = (itemId: number, qtyChange: number) => {
-        socket.emit('update_cart_qty', { itemId, qtyChange });
+    const deleteCartItem = (productname: string) => {
+        fetch(`http://127.0.0.1:3000/cart/delete`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username: currentUser, productname }),
+        })
+        .then(response => {
+            if (response.ok) {
+                Alert.alert('Success', 'Item removed from cart');
+                fetchCartItems(currentUser as string);
+            } else {
+                response.json().then(data => {
+                    Alert.alert('Error', data.error);
+                });
+            }
+        })
+        .catch(error => Alert.alert('Error', error.toString()));
+    };
+
+    const handleCheckout = () => {
+        const checkoutData = cartItems.map(item => ({
+            productImage: item.product_img,
+            productName: item.productname,
+            cartQty: item.cartqty,
+            totalPrice: item.totalprice,
+        }));
+        
+        navigation.navigate('PaymentPage', { checkoutData });
     };
 
     return (
@@ -66,6 +94,11 @@ const ShoppingCart = ({ navigation }: any) => {
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => (
                     <View style={styles.cartItemBox}>
+                        <MaterialCommunityIcons 
+                            name="bucket-outline" 
+                            style={styles.removeIcon}
+                            onPress={() => deleteCartItem(item.productname)}
+                        />
                         {/* Display product image */}
                         {item.product_img && (
                             <Image
@@ -75,21 +108,17 @@ const ShoppingCart = ({ navigation }: any) => {
                         )}
                         <View style={styles.itemDetails}>
                             <Text style={styles.cartItemText}>{item.productname}</Text>
-                            <Text style={styles.cartItemText}>Total Price: ${item.totalprice}</Text>
-
-                            <View style={styles.qtyControl}>
-                                <TouchableOpacity onPress={() => updateCartQty(item.id, -1)}>
-                                    <Text style={styles.qtyButton}>-</Text>
-                                </TouchableOpacity>
-                                <Text style={styles.qtyText}>{item.cartqty}</Text>
-                                <TouchableOpacity onPress={() => updateCartQty(item.id, 1)}>
-                                    <Text style={styles.qtyButton}>+</Text>
-                                </TouchableOpacity>
-                            </View>
+                            <Text style={styles.cartItemTextsub}>Quantity : {item.cartqty}</Text>
+                            <Text style={styles.cartItemTextsub}>Total Price: ${item.totalprice}</Text>
                         </View>
                     </View>
                 )}
             />
+
+            {/* Checkout Button */}
+            <TouchableOpacity style={styles.checkoutButton} onPress={handleCheckout}>
+                <Text style={styles.checkoutButtonText}>Checkout</Text>
+            </TouchableOpacity>
         </View>
     );
 };
@@ -128,28 +157,35 @@ const styles = StyleSheet.create({
         marginLeft: 10,
     },
     cartItemText: {
-        fontSize: 18,
+        fontSize: 22,
         fontWeight: 'bold',
         marginBottom: 5,
+        color: '#487df7',
+    },
+    cartItemTextsub:{
+        fontWeight: 'bold',
+        fontSize: 16,
     },
     productImage: {
-        width: 100,
-        height: 100,
-        resizeMode: 'contain',
+        width: 80,   // Fixed width
+        height: 120,  // Fixed height
+        resizeMode: 'contain', // Adjust image fitting
+        borderRadius: 8, // Optional: for rounded corners
     },
-    qtyControl: {
-        flexDirection: 'row',
+    removeIcon: {
+        fontSize: 30,
+        color: 'red',
+        paddingRight: 10,
+    },
+    checkoutButton: {
+        marginTop: 20,
+        backgroundColor: '#487df7',
+        paddingVertical: 15,
+        borderRadius: 8,
         alignItems: 'center',
     },
-    qtyButton: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginHorizontal: 10,
-        padding: 5,
-        backgroundColor: '#e0e0e0',
-        borderRadius: 5,
-    },
-    qtyText: {
+    checkoutButtonText: {
+        color: '#fff',
         fontSize: 18,
         fontWeight: 'bold',
     },
