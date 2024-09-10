@@ -100,7 +100,7 @@ const App = ({ navigation }: any) =>{
               </View>
             </TouchableNativeFeedback>
             <TouchableNativeFeedback onPress={() => {
-              navigation.navigate('UpdatePassword');
+              navigation.navigate('ProfilePage', {screen: 'UpdatePassword'});
             }}>
               <View style={styles.individualBodyContainer}>
                 <Text style={styles.individualBodyText}>Update Password</Text>

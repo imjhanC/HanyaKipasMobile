@@ -100,7 +100,7 @@ def changePassword():
         return jsonify({"error": "Invalid password"}), 403
     else:
         newPassword = request.json['newPassword']
-        conn = get_db_connection_cart('users.db')
+        conn = get_db_connection()
         cursor = conn.cursor()
 
         cursor.execute('UPDATE users SET password = ? WHERE username = ? ', (newPassword, username))
