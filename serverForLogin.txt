@@ -68,29 +68,20 @@ INSERT INTO products (product_name, product_qty, product_desc, product_img, prod
 INSERT INTO products (product_name, product_qty, product_desc, product_img, product_price,product_type) VALUES ('Bladeless fan 10', 21, 'Cool Table fan9 ',readfile('Products\bladelessfan\bladeless10.jpg'),450.00,'bladeless fan');
 
 sqlite3 order.db
-CREATE TABLE orders (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    cusname TEXT NOT NULL,                  --shipping purpose
-    cus_addr TEXT NOT NULL,                 --shipping purpose
-    cus_phoneno TEXT NOT NULL,              --shipping purpose
-    total_amount DOUBLE NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    user_name TEXT NOT NULL,               --Foreign key to Users table
-    FOREIGN KEY (user_name) REFERENCES users(username)
-);
-
-CREATE TABLE orderItems (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    order_id INTEGER NOT NULL,
-    product_name INTEGER NOT NULL,            
-    quantity INTEGER NOT NULL,
+CREATE TABLE IF NOT EXISTS orders (
+    order_id INTEGER PRIMARY KEY AUTOINCREMENT,  -- Make order_id auto-increment
+    product_name TEXT NOT NULL,            
+    product_qty INTEGER NOT NULL,
     price_per_unit DOUBLE NOT NULL,
     total_price DOUBLE NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES orders(id), -- Reference handled in the application
+    cusname TEXT NOT NULL,                  
+    cus_addr TEXT NOT NULL,                 
+    cus_phoneno TEXT NOT NULL,              
+    total_amount DOUBLE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (product_name) REFERENCES products(product_name),
     FOREIGN KEY (price_per_unit) REFERENCES products(product_price)
 );
-
 
 sqlite3 cart.db
 CREATE TABLE carts(

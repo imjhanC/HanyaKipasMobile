@@ -395,5 +395,58 @@ def delete_cart_item():
 
     conn.close()
     return jsonify({"message": "Item deleted successfully"}), 200
+
+@app.route('/process_payment', methods=['POST'])
+def process_payment():
+    data = request.json
+    cusname = data.get('cusname')
+    cus_addr = data.get('cus_addr')
+    cus_phoneno = data.get('cus_phoneno')
+    cartItems = data.get('cartItems')
+    total_amount = data.get('total_amount')
+
+    # Connect to order.db to insert orders
+    conn = get_db_connection_cart('order.db')
+    cursor = conn.cursor()
+
+    try:
+        # Insert each product in the order
+        for item in cartItems:
+            cursor.execute('''
+                INSERT INTO orders (product_name, product_qty, price_per_unit, total_price, cusname, cus_addr, cus_phoneno, total_amount)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            ''', (
+                item['product_name'],
+                item['product_qty'],
+                item['price_per_unit'],
+                item['total_price'],
+                cusname,
+                cus_addr,
+                cus_phoneno,
+                total_amount
+            ))
+
+        conn.commit()
+
+        # Now, connect to cart.db to clear the cart
+        cart_conn = get_db_connection_cart('cart.db')
+        cart_cursor = cart_conn.cursor()
+
+        # Delete all data from the carts table
+        cart_cursor.execute('DELETE FROM carts')
+        cart_conn.commit()
+
+        return jsonify({"message": "Order processed and cart cleared successfully"}), 201
+
+    except Exception as e:
+        conn.rollback()
+        cart_conn.rollback()
+        return jsonify({"error": str(e)}), 500
+
+    finally:
+        conn.close()
+        cart_conn.close()
+
+        
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=3000, debug=True)

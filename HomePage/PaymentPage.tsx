@@ -30,18 +30,37 @@ const PaymentPage = ({ route, navigation }: any) => {
             Alert.alert('Error', 'Please fill all fields');
             return;
         }
-
+    
         console.log('Processing payment...');
-        console.log('Shipping Name:', shippingName);
-        console.log('Address:', address);
-        console.log('Phone Number:', phoneNumber);
-        console.log('Credit Card Number:', creditCardNumber);
-        console.log('Expiration Date:', expirationDate);
-        console.log('CVV:', cvv);
-
-        Alert.alert('Purchase Successful', 'Thank you for your purchase!', [
-            { text: 'OK', onPress: () => navigation.navigate('HomePage') }
-        ]);
+    
+        fetch('http://127.0.0.1:3000/process_payment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                cusname: shippingName,
+                cus_addr: address,
+                cus_phoneno: phoneNumber,
+                cartItems: checkoutData.map((item: { productName: any; cartQty: number; totalPrice: number; }) => ({
+                    product_name: item.productName,
+                    product_qty: item.cartQty,
+                    price_per_unit: item.totalPrice / item.cartQty,  // Calculate price per unit
+                    total_price: item.totalPrice,
+                })),
+                total_amount: totalPrice,  // Total amount for the whole order
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            Alert.alert('Purchase Successful', 'Thank you for your purchase!', [
+                { text: 'OK', onPress: () => navigation.navigate('HomePage') }
+            ]);
+        })
+        .catch(error => {
+            console.error('Payment error:', error);
+            Alert.alert('Error', 'Payment failed. Please try again.');
+        });
     };
 
     return (
