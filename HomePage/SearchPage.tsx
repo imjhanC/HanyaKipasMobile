@@ -1,4 +1,3 @@
-import { forNoAnimation } from '@react-navigation/stack/lib/typescript/src/TransitionConfigs/CardStyleInterpolators';
 import React, { useState, useEffect } from 'react';
 import { 
     View, 
@@ -7,19 +6,12 @@ import {
     Text, 
     TouchableNativeFeedback,
     FlatList,
-    Dimensions,
     SafeAreaView,
     Image,
 } from 'react-native';
-import io from 'socket.io-client';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-// npm install react-native-parallax-scroll-view --save
 
-const windowHeight = Dimensions.get('window').height;
-
-const socket = io('http://127.0.0.1:3000');
-
-const App = ({router, navigation}: any) =>{
+const App = ({navigation}: any) =>{
   const [recommendationName, setReccomendationName] = useState([]);
   
   useEffect(() => {
@@ -100,34 +92,28 @@ const App = ({router, navigation}: any) =>{
                 </TouchableNativeFeedback>
             </View>
         </View>
-        <View>
+        <View style={styles.recoContainer}>
             <FlatList
                 keyExtractor={item => item.id.toString()}
                 data = {recommendationName}
                 renderItem={({ item }) => {
                     return(
                         <TouchableNativeFeedback onPress={() => {
-                            navigation.navigate('Home',{
-                                screen:'ProductPage',
-                                params:{
+                            navigation.navigate('ProductPage',
+                                {
                                   product_name: item.product_name,
                                   product_qty: item.product_qty,
                                   product_desc: item.product_desc,
                                   product_img: item.product_img,
                                   product_price: item.product_price,
                                   product_type: item.product_type,
-                                }})}}>
+                                })}}>
                             <View style={styles.recoView}>
                                 <Text style={styles.recoText}>{item.product_name}</Text>
                             </View>
                         </TouchableNativeFeedback>
                     )
                 }}
-            />
-        </View>
-        <View style={{paddingTop: 50}}>
-            <Image 
-                source={require('./Fan.gif')}
             />
         </View>
     </SafeAreaView>
@@ -139,9 +125,9 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     topNavContainer: {
-        flex: 1,
+        flex: 0.0325,
         flexDirection: 'row',
-        minHeight: 75,
+        minHeight: 50,
     },
     searchContainer: {
         flexDirection: 'row',
@@ -159,6 +145,9 @@ const styles = StyleSheet.create({
     input: {
         flex: 1,  
     },
+    recoContainer:{
+        flex: 0.5,
+    },
     recoView: {
         borderBottomWidth: 2,
         borderColor: '#d1d1d1',
@@ -167,6 +156,6 @@ const styles = StyleSheet.create({
         padding: 15,
         fontSize: 25,
         color: '#3D3D3D',
-    }
+    },
 })
 export default App;

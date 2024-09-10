@@ -1,9 +1,19 @@
 import React, { useState, useRef } from 'react';
-import { View, TextInput, Dimensions, Text, Alert, StyleSheet, TouchableOpacity, Animated, TouchableWithoutFeedback, TouchableNativeFeedback } from 'react-native';
+import { 
+  View, 
+  TextInput, 
+  Dimensions, 
+  Text, 
+  Alert, 
+  StyleSheet, 
+  TouchableOpacity, 
+  Animated, 
+  TouchableWithoutFeedback, 
+  TouchableNativeFeedback 
+} from 'react-native';
 import axios from 'axios';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
 const RegisterPage = ({navigation}:any) => {
@@ -158,7 +168,7 @@ const RegisterPage = ({navigation}:any) => {
         disabled={loading}
       >
         <Animated.View style={[styles.button, { transform: [{ scale: scaleAnim }] }]}>
-          <Text style={styles.buttonText}>{loading ? "Updating..." : "Updating"}</Text>
+          <Text style={styles.buttonText}>{loading ? "Updating..." : "Update Password"}</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
 
