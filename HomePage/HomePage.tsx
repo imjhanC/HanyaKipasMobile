@@ -28,7 +28,7 @@ const HomePage = ({ route, navigation }: any) => {
   ]);
 
   const [products, setProducts] = useState<any[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState('all fans');
   const [cartCount, setCartCount] = useState<number>(0);
   const [socket, setSocket] = useState<any>(null);
 
@@ -85,12 +85,17 @@ const HomePage = ({ route, navigation }: any) => {
       [
         {
           text: 'OK',
-          onPress: () => navigation.goBack()
+          onPress: () => navigation.navigate('SearchPage')
         }
       ]
     );
-    
   }
+
+  useEffect(() => {
+    if (filteredFans.length === 0 && searchQuery !== 'all fans') {
+      emptyFilteredFans();
+    }
+  }, [searchQuery])
 
   // For rotating search bar text
   const [placeholderText, setPlaceHolderText] = useState('Search.....');
@@ -156,7 +161,7 @@ const HomePage = ({ route, navigation }: any) => {
 
       <View style={styles.productContainer}>
         <FlatList
-          data={searchQuery.toLowerCase() === 'all fans' ? products : (filteredFans.length === 0 ? )}
+          data={searchQuery.toLowerCase() === 'all fans' ? products : filteredFans}
           showsVerticalScrollIndicator={false}
           horizontal={false}
           numColumns={2}
