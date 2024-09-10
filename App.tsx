@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { 
-    View, 
     StyleSheet, 
-    TextInput, 
-    Text, 
-    TouchableNativeFeedback,
-    FlatList,
     Dimensions,
     SafeAreaView
 } from 'react-native';
@@ -36,7 +31,6 @@ const Profile = () => {
       >
         <stack.Screen name="ProfilePage" component={ProfilePage} />
         <stack.Screen name="RegisterPage" component={RegisterPage} />
-        <stack.Screen name="UpdatePassword" component={UpdatePasswordPage} />
       </stack.Navigator>
   );
 }
@@ -118,6 +112,7 @@ const App = ({route, navigation}: any) => {
             <stack.Screen name="SearchPage" component={SearchPage} />
             <stack.Screen name="ProductPage" component={ProductPage} />
             <stack.Screen name="Login" component={LoginPage} />
+            <stack.Screen name="UpdatePasswordPage" component={UpdatePasswordPage} />
             <stack.Screen name="ShoppingCart" component={ShoppingCart} />
             <stack.Screen name="Profile" component={Profile} />
             <stack.Screen name='PaymentPage' component={PaymentPage} />
