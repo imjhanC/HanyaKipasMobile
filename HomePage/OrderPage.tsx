@@ -1,31 +1,103 @@
-import React from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, FlatList, ScrollView } from 'react-native';
+import axios from 'axios';
+
+// Define the types
+interface Product {
+  product_name: string;
+  product_qty: number;
+  price_per_unit: number;
+  total_price: number;
+}
+
+interface Order {
+  order_id: number;
+  cusname: string;
+  cus_addr: string;
+  cus_phoneno: string;
+  created_at: string;
+  products: Product[];
+}
+
+interface OrderGroup {
+  timestamp: string;
+  orders: Order[];
+}
 
 const OrderPage = () => {
-  // Mock data for order history
-  const orders = [
-    { id: '1', orderNumber: '1001', date: '2024-08-01', status: 'Delivered' },
-    { id: '2', orderNumber: '1002', date: '2024-08-15', status: 'Processing' },
-    { id: '3', orderNumber: '1003', date: '2024-08-20', status: 'Shipped' },
-    { id: '4', orderNumber: '1004', date: '2024-08-25', status: 'Cancelled' },
-  ];
+  const [orders, setOrders] = useState<OrderGroup[]>([]);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  // Render individual order item
-  const renderOrderItem = ({ item }) => (
-    <View style={styles.orderItem}>
-      <Text style={styles.orderNumber}>Order #{item.orderNumber}</Text>
-      <Text style={styles.orderDate}>Date: {item.date}</Text>
-      <Text style={styles.orderStatus}>Status: {item.status}</Text>
+  // Fetch orders for the current logged-in user
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:3000/orders/current'); // Adjust the API endpoint
+        const ordersByTimestamp = response.data.orders;
+
+        // Convert the object to an array of { timestamp, orders }
+        const ordersArray = Object.keys(ordersByTimestamp).map(timestamp => ({
+          timestamp,
+          orders: ordersByTimestamp[timestamp]
+        }));
+
+        setOrders(ordersArray);
+      } catch (error) {
+        setErrorMessage('Failed to fetch orders');
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
+  // Render each product in an order
+  const renderProductItem = ({ item }: { item: Product }) => (
+    <View style={styles.productItem}>
+      <Text style={styles.productName}>Product: {item.product_name}</Text>
+      <Text style={styles.productDetail}>Qty: {item.product_qty}</Text>
+      <Text style={styles.productDetail}>Unit Price: ${item.price_per_unit.toFixed(2)}</Text>
+      <Text style={styles.productDetail}>Total: ${item.total_price.toFixed(2)}</Text>
+    </View>
+  );
+
+  // Render each order with its products
+  const renderOrderItem = ({ item }: { item: Order }) => (
+    <View style={styles.orderBox}>
+      <Text style={styles.orderId}>Order ID: {item.order_id}</Text>
+      <Text style={styles.orderDetail}>Customer: {item.cusname}</Text>
+      <Text style={styles.orderDetail}>Address: {item.cus_addr}</Text>
+      <Text style={styles.orderDetail}>Phone: {item.cus_phoneno}</Text>
+
+      <ScrollView style={styles.productList}>
+        <FlatList
+          data={item.products}  // Assuming `products` is a list of product objects for each order
+          renderItem={renderProductItem}
+          keyExtractor={(product) => product.product_name}
+        />
+      </ScrollView>
+    </View>
+  );
+
+  // Render the orders grouped by timestamp
+  const renderOrderGroup = ({ item }: { item: OrderGroup }) => (
+    <View>
+      <Text style={styles.timestamp}>Time : {item.timestamp}</Text>
+      <FlatList
+        data={item.orders}  // Array of orders for each timestamp
+        renderItem={renderOrderItem}
+        keyExtractor={(order) => order.order_id.toString()}
+      />
     </View>
   );
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Order History</Text>
+      {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
       <FlatList
         data={orders}
-        renderItem={renderOrderItem}
-        keyExtractor={(item) => item.id}
+        renderItem={renderOrderGroup}
+        keyExtractor={(item) => item.timestamp}
         contentContainerStyle={styles.orderList}
       />
     </View>
@@ -42,32 +114,58 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 10,
+    color:'#487df7',
   },
   orderList: {
     paddingBottom: 20,
   },
-  orderItem: {
+  orderBox: {
     padding: 15,
     backgroundColor: '#f8f8f8',
     borderRadius: 8,
-    marginVertical: 5,
+    marginVertical: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
   },
-  orderNumber: {
+  timestamp: {
+    fontSize: 21,
+    fontWeight: 'bold',
+    marginVertical: 10,
+    color: 'black',
+  },
+  orderId: {
     fontSize: 16,
     fontWeight: 'bold',
   },
-  orderDate: {
+  orderDetail: {
     fontSize: 14,
     color: '#666',
+    marginBottom: 5,
   },
-  orderStatus: {
+  productList: {
+    maxHeight: 150,
+    marginTop: 10,
+  },
+  productItem: {
+    backgroundColor: '#e8e8e8',
+    padding: 10,
+    marginVertical: 5,
+    borderRadius: 6,
+  },
+  productName: {
     fontSize: 14,
-    color: '#888',
+    fontWeight: 'bold',
+  },
+  productDetail: {
+    fontSize: 12,
+    color: '#666',
+  },
+  error: {
+    color: 'red',
+    marginBottom: 10,
   },
 });
 

@@ -454,7 +454,56 @@ def process_payment():
         conn.close()
         cart_conn.close()
 
+@app.route('/orders/current', methods=['GET'])
+def get_current_user_orders():
+    username = session.get('username')
+    
+    if not username:
+        return jsonify({"error": "No user logged in"}), 401
+    
+    conn = get_db_connection_cart('order.db')
+    cursor = conn.cursor()
 
+    # Query to fetch the orders for the current user
+    cursor.execute('''
+        SELECT order_id, cusname, cus_addr, cus_phoneno, created_at
+        FROM orders
+        WHERE username = ?
+        ORDER BY created_at
+    ''', (username,))
+    orders = cursor.fetchall()
+
+    # Convert sqlite3.Row to dictionary and group by full timestamp
+    orders_list = {}
+    for order in orders:
+        timestamp = order['created_at']
+        
+        cursor.execute('''
+            SELECT product_name, product_qty, price_per_unit, total_price
+            FROM orders
+            WHERE order_id = ?
+        ''', (order['order_id'],))
+        products = cursor.fetchall()
+
+        # Convert each product row to dictionary
+        products_list = [dict(product) for product in products]
+
+        # Add order to the list, grouping by timestamp
+        if timestamp not in orders_list:
+            orders_list[timestamp] = []
+        
+        orders_list[timestamp].append({
+            "order_id": order["order_id"],
+            "cusname": order["cusname"],
+            "cus_addr": order["cus_addr"],
+            "cus_phoneno": order["cus_phoneno"],
+            "created_at": order["created_at"],
+            "products": products_list  # Attach the product details
+        })
+
+    conn.close()
+    
+    return jsonify({"orders": orders_list})
         
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=3000, debug=True)
