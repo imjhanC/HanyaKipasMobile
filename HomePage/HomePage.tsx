@@ -47,7 +47,24 @@ const HomePage = ({ route, navigation }: any) => {
         console.error('Error fetching products:', error);
       });
 
-    // Fetch cart count from Flask server
+    // Fetch cart count from Flask server initially
+    fetchCartCount();
+
+    // Set up socket event listener for cart count updates
+    socketConnection.on('cartCountUpdate', (data: any) => {
+      setCartCount(data.count);
+    });
+
+    // Set up interval for fetching cart count every 3 seconds
+    const intervalId = setInterval(fetchCartCount, 3000);
+
+    return () => {
+      socketConnection.disconnect();
+      clearInterval(intervalId);
+    };
+  }, []);
+
+  const fetchCartCount = () => {
     fetch('http://127.0.0.1:3000/cart/count')
       .then((response) => response.json())
       .then((data) => {
@@ -56,16 +73,7 @@ const HomePage = ({ route, navigation }: any) => {
       .catch((error) => {
         console.error('Error fetching cart count:', error);
       });
-
-    // Set up socket event listener for cart count updates
-    socketConnection.on('cartCountUpdate', (data: any) => {
-      setCartCount(data.count);
-    });
-
-    return () => {
-      socketConnection.disconnect();
-    };
-  }, []);
+  };
 
   useEffect(() => {
     if (route?.params?.search !== undefined && route?.params?.search !== null) {
@@ -89,13 +97,13 @@ const HomePage = ({ route, navigation }: any) => {
         }
       ]
     );
-  }
+  };
 
   useEffect(() => {
     if (filteredFans.length === 0 && searchQuery !== 'all fans') {
       emptyFilteredFans();
     }
-  }, [searchQuery])
+  }, [searchQuery]);
 
   // For rotating search bar text
   const [placeholderText, setPlaceHolderText] = useState('Search.....');
@@ -168,7 +176,7 @@ const HomePage = ({ route, navigation }: any) => {
           renderItem={({ item }) => (
             <TouchableNativeFeedback
               onPress={() =>
-                navigation.navigate('ProductPage',{
+                navigation.navigate('ProductPage', {
                   product_name: item.product_name,
                   product_qty: item.product_qty,
                   product_desc: item.product_desc,

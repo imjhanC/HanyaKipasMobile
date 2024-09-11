@@ -440,7 +440,7 @@ def process_payment():
         cart_cursor = cart_conn.cursor()
 
         # Delete all data from the carts table for this user
-        cart_cursor.execute('DELETE FROM carts WHERE cusname = ?', (cusname,))
+        cart_cursor.execute('DELETE FROM carts WHERE cusname = ?', (username,))
         cart_conn.commit()
 
         return jsonify({"message": "Order processed and cart cleared successfully"}), 201
