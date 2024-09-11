@@ -29,25 +29,32 @@ const OrderPage = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   // Fetch orders for the current logged-in user
+  const fetchOrders = async () => {
+    try {
+      const response = await axios.get('http://127.0.0.1:3000/orders/current'); // Adjust the API endpoint
+      const ordersByTimestamp = response.data.orders;
+
+      // Convert the object to an array of { timestamp, orders }
+      const ordersArray = Object.keys(ordersByTimestamp).map(timestamp => ({
+        timestamp,
+        orders: ordersByTimestamp[timestamp]
+      }));
+
+      setOrders(ordersArray);
+    } catch (error) {
+      setErrorMessage('Failed to fetch orders');
+    }
+  };
+
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await axios.get('http://127.0.0.1:3000/orders/current'); // Adjust the API endpoint
-        const ordersByTimestamp = response.data.orders;
-
-        // Convert the object to an array of { timestamp, orders }
-        const ordersArray = Object.keys(ordersByTimestamp).map(timestamp => ({
-          timestamp,
-          orders: ordersByTimestamp[timestamp]
-        }));
-
-        setOrders(ordersArray);
-      } catch (error) {
-        setErrorMessage('Failed to fetch orders');
-      }
-    };
-
+    // Initial fetch
     fetchOrders();
+
+    // Set up polling
+    const intervalId = setInterval(fetchOrders, 3000); // Fetch every 3 seconds
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(intervalId);
   }, []);
 
   // Render each product in an order
