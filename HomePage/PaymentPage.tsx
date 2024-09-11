@@ -71,7 +71,7 @@ const PaymentPage = ({ route, navigation }: any) => {
                 data={checkoutData}
                 ListHeaderComponent={
                     <>
-                        <Text style={styles.sectionTitle}>Items</Text>
+                        <Text style={styles.sectionTitle}>Cart Items</Text>
                     </>
                 }
                 keyExtractor={(item, index) => index.toString()}
@@ -84,15 +84,15 @@ const PaymentPage = ({ route, navigation }: any) => {
                             />
                         )}
                         <View style={styles.itemDetails}>
-                            <Text style={styles.cartItemText}>{item.productName}</Text>
-                            <Text style={styles.cartItemText}>Price: ${item.totalPrice}</Text>
+                            <Text style={styles.cartItemTextName}>{item.productName}</Text>
+                            <Text style={styles.cartItemText}>Price: RM {item.totalPrice}</Text>
                             <Text style={styles.cartItemText}>Quantity: {item.cartQty}</Text>
                         </View>
                     </View>
                 )}
                 ListFooterComponent={
                     <>
-                        <Text style={styles.totalPrice}>Total Price: ${totalPrice}</Text>
+                        <Text style={styles.totalPrice}>Total Price: RM {totalPrice}</Text>
 
                         <Text style={styles.sectionTitle}>Shipping Information</Text>
                         <TextInput
@@ -154,14 +154,16 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     headerText: {
-        fontSize: 24,
+        fontSize: 27,
         fontWeight: 'bold',
         marginBottom: 20,
+        color: '#487df7',
     },
     sectionTitle: {
-        fontSize: 18,
+        fontSize: 20,
         fontWeight: 'bold',
         marginVertical: 10,
+        color: 'black',
     },
     cartItemBox: {
         flexDirection: 'row',
@@ -178,6 +180,11 @@ const styles = StyleSheet.create({
     cartItemText: {
         fontSize: 16,
     },
+    cartItemTextName:{
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#487df7',
+    },
     productImage: {
         width: 100,
         height: 100,
@@ -187,6 +194,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         marginVertical: 20,
+        textAlign: 'right',
     },
     input: {
         borderWidth: 1,

@@ -405,6 +405,12 @@ def process_payment():
     cartItems = data.get('cartItems')
     total_amount = data.get('total_amount')
 
+    # Retrieve the current username from the session
+    username = session.get('username')
+    
+    if not username:
+        return jsonify({"error": "No user logged in"}), 401
+
     # Connect to order.db to insert orders
     conn = get_db_connection_cart('order.db')
     cursor = conn.cursor()
@@ -413,8 +419,8 @@ def process_payment():
         # Insert each product in the order
         for item in cartItems:
             cursor.execute('''
-                INSERT INTO orders (product_name, product_qty, price_per_unit, total_price, cusname, cus_addr, cus_phoneno, total_amount)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO orders (product_name, product_qty, price_per_unit, total_price, cusname, cus_addr, cus_phoneno, total_amount, username)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             ''', (
                 item['product_name'],
                 item['product_qty'],
@@ -423,7 +429,8 @@ def process_payment():
                 cusname,
                 cus_addr,
                 cus_phoneno,
-                total_amount
+                total_amount,
+                username  # Add the current username to the order
             ))
 
         conn.commit()
@@ -432,8 +439,8 @@ def process_payment():
         cart_conn = get_db_connection_cart('cart.db')
         cart_cursor = cart_conn.cursor()
 
-        # Delete all data from the carts table
-        cart_cursor.execute('DELETE FROM carts')
+        # Delete all data from the carts table for this user
+        cart_cursor.execute('DELETE FROM carts WHERE cusname = ?', (cusname,))
         cart_conn.commit()
 
         return jsonify({"message": "Order processed and cart cleared successfully"}), 201
@@ -446,6 +453,7 @@ def process_payment():
     finally:
         conn.close()
         cart_conn.close()
+
 
         
 if __name__ == '__main__':
