@@ -6,7 +6,7 @@ const UpdateUsername = ({navigation}:any) =>{
     return(
         <View>
             <TouchableNativeFeedback
-            onPress={() => navigation.navigate('Profile',{screen: 'ProfilePage'})}
+            onPress={() => navigation.goBack()}
             >
             <MaterialCommunityIcons
                 name="arrow-left"

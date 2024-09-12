@@ -2,11 +2,11 @@ import React from "react";
 import { View, TouchableNativeFeedback, Text, StyleSheet, ScrollView, Image } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-const aboutApp = ({navigation}:any) => {
+const AboutApp = ({navigation}:any) => {
     return (
         <View style={styles.container}>
             <TouchableNativeFeedback
-                onPress={() => navigation.navigate('Profile', {screen: 'ProfilePage'})}
+                onPress={() => navigation.goBack()}
             >
                 <MaterialCommunityIcons
                     name="arrow-left"
@@ -44,7 +44,7 @@ const aboutApp = ({navigation}:any) => {
     );
 };
 
-export default aboutApp;
+export default AboutApp;
 
 const styles = StyleSheet.create({
     container: {

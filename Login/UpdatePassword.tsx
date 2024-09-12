@@ -91,7 +91,7 @@ const RegisterPage = ({navigation}:any) => {
   return (
     <View style={styles.container}>
       <TouchableNativeFeedback
-          onPress={() => navigation.navigate('Profile',{screen: 'ProfilePage'})}
+          onPress={() => navigation.goBack()}
         >
           <MaterialCommunityIcons
             name="arrow-left"
