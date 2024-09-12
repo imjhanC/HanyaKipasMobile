@@ -15,9 +15,12 @@
   import RegisterPage from './Login/Register.tsx';
   import ShoppingCart from './HomePage/ShoppingCart.tsx';
   import UpdatePasswordPage from "./Login/UpdatePassword.tsx";
+  import UpdateUsername from "./Login/UpdateUsername.tsx";
   import PaymentPage from './HomePage/PaymentPage.tsx';
   import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+  import AboutPage from "./HomePage/About.tsx";
   import { createStackNavigator } from '@react-navigation/stack';
+import aboutApp from './HomePage/About.tsx';
 
   const btmNav = createBottomTabNavigator();
   const stack = createStackNavigator();
@@ -113,9 +116,11 @@
               <stack.Screen name="ProductPage" component={ProductPage} />
               <stack.Screen name="Login" component={LoginPage} />
               <stack.Screen name="UpdatePasswordPage" component={UpdatePasswordPage} />
+              <stack.Screen name="UpdateUsername" component={UpdateUsername} />
               <stack.Screen name="ShoppingCart" component={ShoppingCart} />
               <stack.Screen name="Profile" component={Profile} />
               <stack.Screen name='PaymentPage' component={PaymentPage} />
+              <stack.Screen name="AboutPage" component={AboutPage}/>
             </stack.Navigator>
           </NavigationContainer>
         </SafeAreaView>

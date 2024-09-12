@@ -36,11 +36,9 @@ const App = ({ navigation }: any) =>{
         require('./ProfileImages/fan7.jpeg'),
         require('./ProfileImages/fan4.jpeg'),
         require('./ProfileImages/fan6.jpeg'),
-        require('./ProfileImages/fan5.jpeg'),
+        require('./ProfileImages/fan5.png'),
         require('./ProfileImages/fan2.png'),
         require('./ProfileImages/fan9.jpeg'),
-        require('./ProfileImages/fan10.png'),
-        require('./ProfileImages/fan11.png'),
       ]
       let currentIndex = 0;
 
@@ -100,10 +98,24 @@ const App = ({ navigation }: any) =>{
               </View>
             </TouchableNativeFeedback>
             <TouchableNativeFeedback onPress={() => {
+              navigation.navigate('UpdateUsername');
+            }}>
+              <View style={styles.individualBodyContainer}>
+                <Text style={styles.individualBodyText}>Update Name WAHAHAHA</Text>
+              </View> 
+            </TouchableNativeFeedback>
+            <TouchableNativeFeedback onPress={() => {
               navigation.navigate('UpdatePasswordPage');
             }}>
               <View style={styles.individualBodyContainer}>
                 <Text style={styles.individualBodyText}>Update Password</Text>
+              </View> 
+            </TouchableNativeFeedback>
+            <TouchableNativeFeedback onPress={() => {
+              navigation.navigate('AboutPage');
+            }}>
+              <View style={styles.individualBodyContainer}>
+                <Text style={styles.individualBodyText}>About Us</Text>
               </View>
             </TouchableNativeFeedback>
             <TouchableNativeFeedback onPress={() => {
@@ -157,7 +169,7 @@ const styles = StyleSheet.create({
       paddingTop: 25,
     },
     individualBodyContainer: {
-      height: 70,
+      height: 60,
       width: windowWidth * 0.8,
       borderRadius: 12.5,
       borderColor: '#ced5e0',
@@ -172,12 +184,12 @@ const styles = StyleSheet.create({
       color: '#0b3370',
     },
     logoutContainer: {
-      height: 70,
+      marginTop: 35,
+      height: 50,
       width: windowWidth * 0.8,
       borderRadius: 12.5,
       borderColor: '#ce5540',
       borderWidth: 2,
-      margin: 5,
       justifyContent: 'center',
       paddingLeft: 15,
     },
