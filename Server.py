@@ -12,24 +12,14 @@ Session(app)  # Initialize the Flask-Session extension
 CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-def get_db_connection():
-    conn = sqlite3.connect('users.db')
-    conn.row_factory = sqlite3.Row
-    return conn
-
-def get_db_connection_1(db_name='products.db'):
-    conn = sqlite3.connect(db_name)
-    conn.row_factory = sqlite3.Row
-    return conn
-
-def get_db_connection_cart(db_name='cart.db'):
+def get_db_connection(db_name):
     conn = sqlite3.connect(db_name)
     conn.row_factory = sqlite3.Row
     return conn
 
 # Emit cart count whenever the cart is updated
 def emit_cart_count(username):
-    conn = get_db_connection_cart('cart.db')
+    conn = get_db_connection('cart.db')
     cursor = conn.cursor()
 
     cursor.execute('SELECT COUNT(*) as count FROM carts WHERE cusname = ?', (username,))
@@ -45,7 +35,7 @@ def register():
     username = request.json['username']
     password = request.json['password']
 
-    conn = get_db_connection()
+    conn = get_db_connection('users.db')
     cursor = conn.cursor()
 
     try:
@@ -63,7 +53,7 @@ def login():
     username = request.json['username']
     password = request.json['password']
 
-    conn = get_db_connection()
+    conn = get_db_connection('users.db')
     cursor = conn.cursor()
 
     cursor.execute('SELECT * FROM users WHERE username = ? AND password = ?', (username, password))
@@ -86,7 +76,7 @@ def changePassword():
     if not username:
         return jsonify({"error": "No user logged in"}), 401
     
-    conn = get_db_connection()
+    conn = get_db_connection('users.db')
     cursor = conn.cursor()
 
     cursor.execute('SELECT * FROM users WHERE username = ? AND password = ?', (username, oldPassword))
@@ -100,7 +90,7 @@ def changePassword():
         return jsonify({"error": "Invalid password"}), 403
     else:
         newPassword = request.json['newPassword']
-        conn = get_db_connection()
+        conn = get_db_connection('users.db')
         cursor = conn.cursor()
 
         cursor.execute('UPDATE users SET password = ? WHERE username = ? ', (newPassword, username))
@@ -117,7 +107,7 @@ def logout():
 
 @app.route('/users', methods=['GET'])
 def get_users():
-    conn = get_db_connection()
+    conn = get_db_connection('users.db')
     cursor = conn.cursor()
     
     cursor.execute('SELECT * FROM users')
@@ -133,7 +123,7 @@ def get_users():
 
 @app.route('/products', methods=['GET'])
 def get_products():
-    conn = get_db_connection_1('products.db')
+    conn = get_db_connection('products.db')
     cursor = conn.cursor()
 
     cursor.execute('SELECT * FROM products')
@@ -159,7 +149,7 @@ def get_products():
 
 @app.route('/products/random', methods=['GET'])
 def get_random_products():
-    conn = get_db_connection_1('products.db')
+    conn = get_db_connection('products.db')
     cursor = conn.cursor()
 
     cursor.execute('SELECT * FROM products ORDER BY RANDOM() LIMIT 5;')
@@ -185,7 +175,7 @@ def get_random_products():
 
 @app.route('/recommendations/<string:current_product_name>', methods=['GET'])
 def get_recommendations(current_product_name):
-    conn = get_db_connection_1('products.db')
+    conn = get_db_connection('products.db')
     cursor = conn.cursor()
 
     cursor.execute('SELECT * FROM products WHERE product_name != ?', (current_product_name,))
@@ -209,7 +199,7 @@ def get_recommendations(current_product_name):
 def handle_get_recommendations(data):
     current_product_name = data.get('current_product_name')
     
-    conn = get_db_connection_1('products.db')
+    conn = get_db_connection('products.db')
     cursor = conn.cursor()
     
     cursor.execute('SELECT * FROM products WHERE product_name != ?', (current_product_name,))
@@ -240,7 +230,7 @@ def get_cart_count():
     if not username:
         return jsonify({"error": "No user logged in"}), 401
 
-    conn = get_db_connection_cart('cart.db')
+    conn = get_db_connection('cart.db')
     cursor = conn.cursor()
 
     cursor.execute('SELECT COUNT(*) as count FROM carts WHERE cusname = ?', (username,))
@@ -271,7 +261,7 @@ def add_to_cart():
     totalprice = data.get('totalprice')
     producttype = data.get('producttype')
 
-    conn = get_db_connection_cart('cart.db')
+    conn = get_db_connection('cart.db')
     cursor = conn.cursor()
 
     # Check if the product already exists in the cart for the given user
@@ -309,8 +299,8 @@ def add_to_cart():
 
 @app.route('/cart/<string:username>', methods=['GET'])
 def get_cart_items(username):
-    conn_cart = get_db_connection_cart('cart.db')
-    conn_products = get_db_connection_1('products.db')
+    conn_cart = get_db_connection('cart.db')
+    conn_products = get_db_connection('products.db')
     
     cursor_cart = conn_cart.cursor()
     cursor_products = conn_products.cursor()
@@ -353,7 +343,7 @@ def get_cart_items(username):
 def get_product_by_name():
     product_name = request.args.get('name')
 
-    conn = get_db_connection_1('products.db')
+    conn = get_db_connection('products.db')
     cursor = conn.cursor()
 
     cursor.execute('SELECT * FROM products WHERE product_name = ?', (product_name,))
@@ -380,7 +370,7 @@ def delete_cart_item():
     cusname = data.get('username')
     productname = data.get('productname')
 
-    conn = get_db_connection_cart('cart.db')
+    conn = get_db_connection('cart.db')
     cursor = conn.cursor()
 
     cursor.execute('DELETE FROM carts WHERE cusname = ? AND productname = ?', (cusname, productname))
@@ -412,7 +402,7 @@ def process_payment():
         return jsonify({"error": "No user logged in"}), 401
 
     # Connect to order.db to insert orders
-    conn = get_db_connection_cart('order.db')
+    conn = get_db_connection('order.db')
     cursor = conn.cursor()
 
     try:
@@ -436,7 +426,7 @@ def process_payment():
         conn.commit()
 
         # Now, connect to cart.db to clear the cart
-        cart_conn = get_db_connection_cart('cart.db')
+        cart_conn = get_db_connection('cart.db')
         cart_cursor = cart_conn.cursor()
 
         # Delete all data from the carts table for this user
@@ -461,7 +451,7 @@ def get_current_user_orders():
     if not username:
         return jsonify({"error": "No user logged in"}), 401
     
-    conn = get_db_connection_cart('order.db')
+    conn = get_db_connection('order.db')
     cursor = conn.cursor()
 
     # Query to fetch the orders for the current user
