@@ -108,20 +108,18 @@ def changeUsername():
 
     if not username:
         return jsonify({"error": "No user logged in"}), 401
-    
-    # Open database connection
-    conn = get_db_connection()
+
+    conn = get_db_connection('users.db')
     cursor = conn.cursor()
 
-    # Check if the current username and password match
     cursor.execute('SELECT * FROM users WHERE username = ? AND password = ?', (username, password))
     user = cursor.fetchone()
 
     if user is None:
         conn.close()
         return jsonify({"error": "Invalid username or password"}), 401
-
-    # Check if the new username is already taken
+    elif password is not user['password']:
+        return jsonify({"error": "Invalid password"}), 403
     cursor.execute('SELECT * FROM users WHERE username = ?', (newUsername,))
     existing_user = cursor.fetchone()
 
@@ -129,11 +127,9 @@ def changeUsername():
         conn.close()
         return jsonify({"error": "New username is already taken"}), 409
 
-    # Update the username
     cursor.execute('UPDATE users SET username = ? WHERE username = ?', (newUsername, username))
     conn.commit()
 
-    # Close the connection after all operations
     conn.close()
 
     return jsonify({"message": "Username changed successfully"}), 201
