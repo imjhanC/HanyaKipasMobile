@@ -120,7 +120,7 @@ const UpdateUsername = ({navigation}:any) =>{
             </View>
             <View style={styles.inputContainer}>
                 <TextInput
-                style={styles.passwordInput}
+                style={styles.input}
                 placeholder="New Username"
                 value={newUsername}
                 onChangeText={setNewUsername}
@@ -128,7 +128,7 @@ const UpdateUsername = ({navigation}:any) =>{
             </View>
             <View style={styles.inputContainer}>
                 <TextInput
-                style={styles.passwordInput}
+                style={styles.input}
                 placeholder="Confirm New Username"
                 value={newUsernameChk}
                 onChangeText={setNewUsernameChk}
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         color:'black',
       },
-      usernameInput: {
+      input: {
         height: 50,
         width: '100%',
         marginLeft:'auto',
