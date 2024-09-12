@@ -6,13 +6,18 @@ const AboutApp = ({navigation}:any) => {
     return (
         <View style={styles.container}>
             <TouchableNativeFeedback
-                onPress={() => navigation.goBack()}
-            >
-                <MaterialCommunityIcons
-                    name="arrow-left"
-                    style={styles.backIcon}
-                />
-            </TouchableNativeFeedback>
+        onPress={() => navigation.goBack()}
+        >
+        <MaterialCommunityIcons
+            name="arrow-left"
+            style={{
+            fontSize: 45,
+            paddingLeft: 5,
+            color: '#487df7',
+            marginBottom:'auto'
+            }}
+        />
+      </TouchableNativeFeedback>
 
             <ScrollView contentContainerStyle={styles.contentContainer}>
                 <Text style={styles.heading}>About Hanya Kipas</Text>

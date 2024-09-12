@@ -9,6 +9,7 @@ import {
     Image,
     Alert,
 } from 'react-native';
+import {Button} from '../HomePage/Button.tsx';
 
 const windowWidth = Dimensions.get('window').width;
 const serverUrl = 'http://127.0.0.1:3000/'
@@ -45,7 +46,7 @@ const App = ({ navigation }: any) =>{
       const intervalId = setInterval(() => {
         currentIndex = (currentIndex + 1) % profileImageOptions.length;
         setProfileImage(profileImageOptions[currentIndex]);
-      }, 700);
+      }, 10000);
   
       return () => clearInterval(intervalId);
     }, [])
@@ -90,34 +91,22 @@ const App = ({ navigation }: any) =>{
           </View>
           <Text style={styles.name}>{currentUser}</Text>
           <View style={styles.bodyContainer}>
-            <TouchableNativeFeedback onPress={() => {
-              navigation.navigate('HomePage', {screen: 'Order'});
-            }}>
-              <View style={styles.individualBodyContainer}>
-                <Text style={styles.individualBodyText}>My Orders</Text>
-              </View>
-            </TouchableNativeFeedback>
-            <TouchableNativeFeedback onPress={() => {
-              navigation.navigate('UpdateUsername');
-            }}>
-              <View style={styles.individualBodyContainer}>
-                <Text style={styles.individualBodyText}>Update Name WAHAHAHA</Text>
-              </View> 
-            </TouchableNativeFeedback>
-            <TouchableNativeFeedback onPress={() => {
-              navigation.navigate('UpdatePasswordPage');
-            }}>
-              <View style={styles.individualBodyContainer}>
-                <Text style={styles.individualBodyText}>Update Password</Text>
-              </View> 
-            </TouchableNativeFeedback>
-            <TouchableNativeFeedback onPress={() => {
-              navigation.navigate('AboutPage');
-            }}>
-              <View style={styles.individualBodyContainer}>
-                <Text style={styles.individualBodyText}>About Us</Text>
-              </View>
-            </TouchableNativeFeedback>
+            <Button
+              title="My Orders"
+              onPress={() => navigation.navigate('HomePage', { screen: 'Order' })}
+            />
+            <Button
+              title="Update Username"
+              onPress={() => navigation.navigate('UpdateUsername')}
+            />
+            <Button
+              title="Update Password"
+              onPress={() => navigation.navigate('UpdatePasswordPage')}
+            />
+            <Button
+              title="About Us"
+              onPress={() => navigation.navigate('AboutPage')}
+            />
             <TouchableNativeFeedback onPress={() => {
               logout();
             }}>

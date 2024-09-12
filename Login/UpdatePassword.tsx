@@ -91,18 +91,18 @@ const RegisterPage = ({navigation}:any) => {
   return (
     <View style={styles.container}>
       <TouchableNativeFeedback
-          onPress={() => navigation.goBack()}
+        onPress={() => navigation.goBack()}
         >
-          <MaterialCommunityIcons
+        <MaterialCommunityIcons
             name="arrow-left"
             style={{
-              fontSize: 45,
-              paddingLeft: 5,
-              color: '#487df7',
-              marginBottom:'auto'
+            fontSize: 45,
+            paddingLeft: 5,
+            color: '#487df7',
+            marginBottom:'auto'
             }}
-          />
-        </TouchableNativeFeedback>
+        />
+      </TouchableNativeFeedback>
       
       <Text style={styles.title}>Update Your Password</Text>
       <View style={styles.inputContainer}>
