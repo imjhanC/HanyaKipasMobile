@@ -1,16 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { TouchableNativeFeedback, View, Text, StyleSheet, Dimensions } from 'react-native';
-
 
 interface ButtonProps {
   title: string;
   onPress: () => void;
 }
+
 const windowWidth = Dimensions.get('window').width;
+
 export const Button: React.FC<ButtonProps> = ({ title, onPress }) => {
+  const [isPressed, setIsPressed] = useState(false);
+
+  useEffect(() => {
+    if (isPressed) {
+      console.log('Button is pressed');
+    }
+  }, [isPressed]);
+
   return (
-    <TouchableNativeFeedback onPress={onPress}>
-      <View style={styles.buttonContainer}>
+    <TouchableNativeFeedback
+      onPressIn={() => setIsPressed(true)}
+      onPressOut={() => setIsPressed(false)}
+      onPress={onPress}
+    >
+      <View style={[styles.buttonContainer, isPressed && { backgroundColor: '#ddd' }]}>
         <Text style={styles.buttonText}>{title}</Text>
       </View>
     </TouchableNativeFeedback>
